@@ -1,24 +1,19 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-
-const title = ref('titolo')
-const jobsList = ref([])
-
-onMounted(async () => {
-  try {
-    const response = await fetch('http://localhost:8080/jobs/all')
-    // console.log(response)
-    const data = await response.json()
-    console.log(data)
-    jobsList.value = data.map((jobsList) => jobsList.title)
-  } catch (error) {
-    console.log('ERRORE FETCH:', error)
-  }
-})
+import MainNavbar from './components/MainNavbar.vue'
+import HeroSection from './components/HeroSection.vue'
+import FooterComponent from './components/FooterComponent.vue'
+import CalendarComponent from './components/CalendarComponent.vue'
 </script>
 <template>
-  <h1>{{ title }}</h1>
-  <ul>
-    <li v-for="job in jobsList" :key="job.id">{{ job }}</li>
-  </ul>
+  <div class="flex flex-col min-h-screen">
+    <header>
+      <MainNavbar />
+    </header>
+    <!-- props in Hero -->
+    <HeroSection />
+    <main class="flex-grow ">
+      <CalendarComponent/>
+    </main>
+    <FooterComponent />
+  </div>
 </template>

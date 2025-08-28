@@ -1,19 +1,21 @@
 <script setup>
 import MainNavbar from './components/MainNavbar.vue'
-import HeroSection from './components/HeroSection.vue'
 import FooterComponent from './components/FooterComponent.vue'
-import CalendarComponent from './components/CalendarComponent.vue'
+import { RouterView } from 'vue-router'
 </script>
 <template>
   <div class="flex flex-col min-h-screen">
     <header>
       <MainNavbar />
     </header>
-    <!-- props in Hero -->
-    <HeroSection />
-    <main class="flex-grow ">
-      <CalendarComponent/>
+
+    <main class="flex-grow">
+      <RouterView />
     </main>
-    <FooterComponent />
+
+    <footer>
+      <FooterComponent />
+    </footer>
   </div>
 </template>
+

@@ -2,6 +2,8 @@
 import MainNavbar from './components/MainNavbar.vue'
 import FooterComponent from './components/FooterComponent.vue'
 import { RouterView } from 'vue-router'
+import 'primeicons/primeicons.css'
+
 </script>
 <template>
   <div class="flex flex-col min-h-screen">

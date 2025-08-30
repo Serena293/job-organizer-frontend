@@ -20,7 +20,10 @@ const jobId = route.params.id;
 
 </script>
 <template>
+  <div class="flex w-full justify-between" >
     <BackButton/>
+    <button><i class="pi pi-trash text-red-500"></i></button>
+  </div>
   <section class="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-lg space-y-6">
     
     <header class="flex items-center justify-between">

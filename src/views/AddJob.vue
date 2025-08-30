@@ -1,12 +1,14 @@
 <script setup>
 import router from '@/router'
 import { reactive } from 'vue'
+import { useToast } from 'primevue/usetoast'
 
 const form = reactive({
   type: 'Full-Time',
   title: '',
   status: 'PENDING',
   description: '',
+  url: '',
   salary: '',
   location: '',
   startingDate: '',
@@ -14,6 +16,7 @@ const form = reactive({
   cons: '',
   company: '',
 })
+const toast = useToast()
 
 const handleSubmit = async () => {
   const newJob = {
@@ -27,6 +30,7 @@ const handleSubmit = async () => {
     startingDate: form.startingDate,
     pros: form.pros,
     cons: form.cons,
+    url: form.url,
   }
 
   try {
@@ -41,10 +45,26 @@ const handleSubmit = async () => {
     }
 
     const data = await response.json()
-    console.log('Job saved:', data)
+    // console.log('Job saved:', data)
+    toast.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Job added to Job Listening',
+      life: 3000,
+    },
+
+  )
+
     router.push('/jobs')
   } catch (error) {
-    console.error('Error saving job:', error)
+    toast.add({
+      severity: 'error',
+      summary: 'Errore',
+      detail: 'Error: ' + error,
+      life: 3000,
+    },
+    console.log('toast error') 
+)
   }
 }
 </script>
@@ -98,6 +118,17 @@ const handleSubmit = async () => {
               rows="4"
               placeholder="Add job duties, expectations, requirements, or copy and paste job description"
             ></textarea>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2">URL</label>
+            <input
+              type="text"
+              v-model="form.url"
+              class="border rounded w-full py-2 px-3"
+              placeholder="www.example.com"
+              required
+            />
           </div>
 
           <div class="mb-4">

@@ -26,7 +26,10 @@ const truncatedDescription = computed(() => {
   <div class="bg-white rounded-xl shadow-md relative">
     <div class="p-4">
       <div class="mb-6">
-        <div class="text-gray-600 my-2">{{ job.type }}</div>
+        <div class="flex w-full justify-between items-center" >
+          <span class="text-gray-600 my-2">{{ job.type }}</span>
+          <span><i class="pi pi-trash text-red-500"></i></span>
+        </div>
         <h3 class="text-xl font-bold">{{ job.title }}</h3>
       </div>
 

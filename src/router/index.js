@@ -4,6 +4,7 @@ import HomeView from '@/views/HomeView.vue';
 import JobsView from '@/views/JobsView.vue';
 import JobDetail from '@/views/JobDetail.vue';
 import AddJob from '@/views/AddJob.vue';
+import EditView from '@/views/EditView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,13 +21,19 @@ const router = createRouter({
     },
     {
         path: '/jobs/:id',
-        name: 'job',
+        name: 'job-detail',
         component: JobDetail
     },
     {
         path:'/jobs/add',
         name:'add-job',
         component: AddJob
+
+    },
+    {
+        path: '/job/edit/:id',
+        name: 'edit-job',
+        component: EditView,
 
     }
 ]

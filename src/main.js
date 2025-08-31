@@ -9,12 +9,14 @@ import ToastService from 'primevue/toastservice'
 import PrimeVue from 'primevue/config'
 import { createApp } from 'vue';
 import App from './App.vue';
+import { createPinia } from 'pinia';
 
 
 
 
 const app = createApp(App);
 
+app.use(createPinia())
 app.use(PrimeVue)
 app.use(ToastService)
 app.use(router);

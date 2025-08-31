@@ -24,7 +24,6 @@ const classToday = (day) => {
   return 'bg-white'
 }
 
-// Nomi mesi e giorni
 const monthNames = [
   'January',
   'February',
@@ -61,7 +60,7 @@ function getDaysInMonth(year, monthIndex) {
         v-for="(day, index) in days"
         :key="index"
         class="p-2 border rounded text-center"
-        :class="day ? classToday(day) : 'bg-transparent'"
+        :class="day ? classToday(day) : 'bg-transparent border-none'"
       >
         {{ day || '' }}
       </div>

@@ -1,11 +1,18 @@
 <script setup>
-import { RouterLink, useRoute } from 'vue-router'
+import {computed} from 'vue'
+import { RouterLink, useRoute } from 'vue-router';
+import { useAuthStore } from '@/stores/AuthStore';
+
+const authStore = useAuthStore();
+const route = useRoute();
 
 const isActiveLink = (routePath) => {
-  const route = useRoute()
-
   return route.path === routePath
 }
+
+
+const isLoggedIn = computed(() => authStore.isLoggedIn);
+
 </script>
 
 <template>
@@ -38,7 +45,7 @@ const isActiveLink = (routePath) => {
           >Jobs</RouterLink
         >
       </li>
-      <li>
+      <li >
         <RouterLink
           to="/jobs/add"
           :class="[
@@ -50,7 +57,30 @@ const isActiveLink = (routePath) => {
           ]"
           >Add Job</RouterLink
         >
+        </li>
+        <li v-if="isLoggedIn">
+        <RouterLink to="/profile"
+          :class="[
+            isActiveLink('/profile') ? 'bg-blue-900' : 'hover:bg-gray-900 hover:text-whiet',
+            'text-white',
+            'px-3',
+            'py-2',
+            'rounded-md',
+          ]"
+        >Profile</RouterLink>
       </li>
+             <li v-else>
+        <RouterLink to="/login"
+          :class="[
+            isActiveLink('/login') ? 'bg-blue-900' : 'hover:bg-gray-900 hover:text-whiet',
+            'text-white',
+            'px-3',
+            'py-2',
+            'rounded-md',
+          ]"
+        >Profile</RouterLink>
+      </li>
+     
     </ul>
   </nav>
 </template>

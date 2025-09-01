@@ -1,5 +1,11 @@
 <script setup>
-import BackButton from '@/components/BackButton.vue'
+import BackButton from '@/components/BackButton.vue';
+import { useAuthStore } from '@/stores/AuthStore';
+import { ref } from 'vue';
+
+const authStore = useAuthStore();
+
+
 </script>
 <template>
   <div class="bg-blue-50">
@@ -68,8 +74,9 @@ import BackButton from '@/components/BackButton.vue'
           type="submit"
           class="border-1 rounded-full font-semibold bg-blue-900 hover:bg-blue-500 text-gray-300 py-1"
         >
-          Login
+          Create account
         </button>
+        <p class="pt-1">Alreadey have an account? <span class="text-blue-500 underline"><RouterLink to="login">Log in </RouterLink></span></p>
       </fieldset>
     </form>
   </section>

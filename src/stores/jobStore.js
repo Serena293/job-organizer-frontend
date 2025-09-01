@@ -22,7 +22,7 @@ export const useJobStore = defineStore('jobStore', () => {
       // prima prova a trovarlo nei jobs già caricati
       let job = jobs.value.find(j => j.id === Number(id))
       if (!job) {
-        // se non c’è, fai una fetch singola
+        // se non c’è,  fetch singola
         const response = await fetch(`http://localhost:8080/jobs/${id}`)
         job = await response.json()
       }

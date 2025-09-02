@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { useAuthStore } from './AuthStore'
 
 export const useJobStore = defineStore('jobStore', () => {
   const jobs = ref([])
@@ -9,7 +10,15 @@ export const useJobStore = defineStore('jobStore', () => {
   const fetchJobs = async () => {
     isLoading.value = true
     try {
-      const response = await fetch('http://localhost:8080/jobs/all')
+      const authStore = useAuthStore()
+      const token = authStore.token
+      const response = await fetch('http://localhost:8080/jobs', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+      if (!response.ok) throw new Error('Fetch failed')
       jobs.value = await response.json()
     } finally {
       isLoading.value = false
@@ -19,11 +28,17 @@ export const useJobStore = defineStore('jobStore', () => {
   const fetchJobById = async (id) => {
     isLoading.value = true
     try {
-      // prima prova a trovarlo nei jobs già caricati
-      let job = jobs.value.find(j => j.id === Number(id))
+      const authStore = useAuthStore()
+      const token = authStore.token
+
+      let job = jobs.value.find((j) => j.id === Number(id))
       if (!job) {
-        // se non c’è,  fetch singola
-        const response = await fetch(`http://localhost:8080/jobs/${id}`)
+        const response = await fetch(`http://localhost:8080/jobs/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        })
         job = await response.json()
       }
       selectedJob.value = job
@@ -34,12 +49,18 @@ export const useJobStore = defineStore('jobStore', () => {
   }
 
   const deleteJob = async (id) => {
+    const authStore = useAuthStore()
+    const token = authStore.token
+
     const response = await fetch(`http://localhost:8080/jobs/${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
 
     if (response.ok) {
-      jobs.value = jobs.value.filter(job => job.id !== id)
+      jobs.value = jobs.value.filter((job) => job.id !== id)
       if (selectedJob.value?.id === id) {
         selectedJob.value = null
       }
@@ -50,40 +71,43 @@ export const useJobStore = defineStore('jobStore', () => {
   }
 
   const updateJob = async (id, updatedData) => {
-  isLoading.value = true
-  try {
-    const response = await fetch(`http://localhost:8080/jobs/${id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedData)
-    })
+    isLoading.value = true
+    try {
+      const authStore = useAuthStore()
+      const token = authStore.token
+      const response = await fetch(`http://localhost:8080/jobs/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedData),
+      })
 
-    if (!response.ok) {
-      throw new Error('Failed to update job')
+      if (!response.ok) {
+        throw new Error('Failed to update job')
+      }
+
+      const updatedJob = await response.json()
+
+    
+      const index = jobs.value.findIndex((job) => job.id === id)
+      if (index !== -1) {
+        jobs.value[index] = updatedJob
+      }
+
+      if (selectedJob.value?.id === id) {
+        selectedJob.value = updatedJob
+      }
+
+      return true
+    } catch (error) {
+      console.error('Error updating job:', error)
+      return false
+    } finally {
+      isLoading.value = false
     }
-
-    const updatedJob = await response.json()
-
-    // aggiorna la lista jobs se il job era già presente
-    const index = jobs.value.findIndex(job => job.id === id)
-    if (index !== -1) {
-      jobs.value[index] = updatedJob
-    }
-
-    // aggiorna selectedJob se è il job corrente
-    if (selectedJob.value?.id === id) {
-      selectedJob.value = updatedJob
-    }
-
-    return true
-  } catch (error) {
-    console.error('Error updating job:', error)
-    return false
-  } finally {
-    isLoading.value = false
   }
-}
-
 
   return {
     jobs,
@@ -92,6 +116,6 @@ export const useJobStore = defineStore('jobStore', () => {
     fetchJobs,
     fetchJobById,
     deleteJob,
-    updateJob
+    updateJob,
   }
 })

@@ -7,7 +7,7 @@ import { useRouter } from 'vue-router';
 const authStore = useAuthStore()
 const router = useRouter()
 
-const username = ref('')
+const email = ref('')
 const password = ref('')
 
 const login = async (event) => {
@@ -46,7 +46,7 @@ const login = async (event) => {
             id="email"
             type="email"
             placeholder="example@email.com"
-            v-model="username"
+            v-model="email"
             class="border-2 px-2 mt-2 rounded"
           />
         </div>

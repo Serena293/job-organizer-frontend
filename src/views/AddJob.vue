@@ -2,6 +2,7 @@
 import router from '@/router'
 import { reactive } from 'vue'
 import { useToast } from 'primevue/usetoast'
+import { useAuthStore } from '@/stores/AuthStore'
 
 const form = reactive({
   type: 'Full-Time',
@@ -17,8 +18,25 @@ const form = reactive({
   company: '',
 })
 const toast = useToast()
+const authStore = useAuthStore() 
 
 const handleSubmit = async () => {
+
+    console.log('Current token:', authStore.token) // ← Debug
+  console.log('Is logged in:', authStore.isLoggedIn) // ← Debug
+
+
+  
+    if (!authStore.token) {
+    toast.add({
+      severity: 'error',
+      summary: 'Errore',
+      detail: 'Need to login.',
+      life: 3000,
+    })
+    return
+  }
+
   const newJob = {
     title: form.title,
     company: form.company,
@@ -36,7 +54,9 @@ const handleSubmit = async () => {
   try {
     const response = await fetch('http://localhost:8080/jobs', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json',
+         'Authorization': `Bearer ${authStore.token}` 
+       },
       body: JSON.stringify(newJob),
     })
 
@@ -57,6 +77,13 @@ const handleSubmit = async () => {
 
     router.push('/jobs')
   } catch (error) {
+
+     if (error.response) {
+    console.log('Response status:', error.response.status)
+    const errorText = await error.response.text()
+    console.log('Response text:', errorText)
+  }
+    
     toast.add({
       severity: 'error',
       summary: 'Errore',

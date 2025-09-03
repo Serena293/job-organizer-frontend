@@ -1,8 +1,8 @@
 <script setup>
-import BackButton from '@/components/BackButton.vue';
-import { useAuthStore } from '@/stores/AuthStore';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import BackButton from '@/components/BackButton.vue'
+import { useAuthStore } from '@/stores/authStore'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -11,18 +11,18 @@ const email = ref('')
 const password = ref('')
 
 const login = async (event) => {
-  event.preventDefault() 
+  event.preventDefault()
 
   const response = await fetch('http://localhost:8080/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: email.value, password: password.value })
+    body: JSON.stringify({ email: email.value, password: password.value }),
   })
 
   if (response.ok) {
     const data = await response.json()
     authStore.login(data.token)
-    router.push('/profile') 
+    router.push('/profile')
   } else {
     console.log(response)
     console.log('Login failed')

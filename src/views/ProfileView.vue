@@ -1,56 +1,60 @@
 <script setup>
 import BackButton from '@/components/BackButton.vue'
-import { useAuthStore } from '@/stores/AuthStore';
-import { useRouter } from 'vue-router';
-
+import { useAuthStore } from '@/stores/authStore'
+import { useRouter } from 'vue-router'
+import { onMounted } from 'vue'
 
 const router = useRouter()
-const authStore = useAuthStore();
+const authStore = useAuthStore()
+
+onMounted(() => {
+  authStore.fetchProfile()
+})
+
 
 const handleLogout = () => {
   authStore.logout()
-   router.push('/login')
+  router.push('/login')
   console.log('logout')
 }
-
 </script>
 <template>
   <section class="bg-blue-50 min-h-screen flex items-center justify-center p-10">
     <div class="grid grid-cols-3 gap-6 w-full max-w-6xl">
-      
       <div class="col-span-2 flex flex-col gap-6">
-        
-       
         <div class="flex justify-between items-center">
           <BackButton />
           <div class="flex gap-3">
-            <button  class="text-blue-700 font-semibold border border-blue-700 px-4 py-1 rounded-full hover:bg-blue-100">
+            <button
+              class="text-blue-700 font-semibold border border-blue-700 px-4 py-1 rounded-full hover:bg-blue-100"
+            >
               Edit Profile
             </button>
-            <button @click="handleLogout" class="text-red-600 font-semibold border border-red-600 px-4 py-1 rounded-full hover:bg-red-100">
+            <button
+              @click="handleLogout"
+              class="text-red-600 font-semibold border border-red-600 px-4 py-1 rounded-full hover:bg-red-100"
+            >
               Log out
             </button>
           </div>
         </div>
 
-    
         <fieldset class="bg-white shadow rounded-2xl p-6">
-          <h1 class="font-bold text-2xl">Serena Ferraro</h1>
-          <h2 class="text-gray-600 text-lg">Job Title</h2>
+          <h1 class="font-bold text-2xl">    {{ authStore.user?.firstName }} {{ authStore.user?.lastName }}</h1>
+          <h2 class="text-gray-600 text-lg">{{ authStore.user?.username }}</h2>
+           <p class="text-gray-500">{{ authStore.user?.email }}</p>
         </fieldset>
 
-     
         <fieldset class="bg-white shadow rounded-2xl p-6">
           <legend class="font-semibold text-gray-700">Documents</legend>
           <p class="text-sm text-gray-500">Upload and manage your documents here.</p>
         </fieldset>
       </div>
 
-      
       <div class="col-span-1">
         <fieldset class="bg-white shadow rounded-2xl p-6 h-full flex flex-col">
           <legend class="font-semibold text-gray-700 mb-2">Note to self</legend>
-          <textarea 
+          <textarea
             placeholder="Write your notes here..."
             class="flex-grow border border-gray-300 rounded-lg p-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
           ></textarea>
@@ -59,4 +63,3 @@ const handleLogout = () => {
     </div>
   </section>
 </template>
-

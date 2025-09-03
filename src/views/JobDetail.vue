@@ -32,8 +32,6 @@ const editJob = () => {
 
 </script>
 
-
-
 <template>
   <div v-if="store.isLoading" class="text-center py-10">Loading...</div>
   <section  v-else-if="store.selectedJob">

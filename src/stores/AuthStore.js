@@ -4,25 +4,55 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: localStorage.getItem('jwt') || null,
     email: null,
+    user: null, 
   }),
-  
+
   getters: {
     isLoggedIn: (state) => !!state.token,
   },
-  
+
   actions: {
     login(token, email) {
       this.token = token
       this.email = email
       localStorage.setItem('jwt', token)
+
+      this.fetchProfile()
     },
-    
+
+ 
     logout() {
-       
       this.token = null
       this.email = null
+      this.user = null
       localStorage.removeItem('jwt')
+    },
+
     
+    async fetchProfile() {
+      if (!this.token) return
+
+      try {
+        const response = await fetch('http://localhost:8080/api/auth/me', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${this.token}`,
+            'Content-Type': 'application/json'
+          }
+        })
+
+        if (!response.ok) {
+          throw new Error('Error fetching profile')
+        }
+
+        const data = await response.json()
+        this.user = data
+        this.email = data.email 
+      } catch (error) {
+        console.error('Errore fetchProfile:', error)
+        // this.logout()
+        console.log(this.token)
+      }
     }
   }
 })

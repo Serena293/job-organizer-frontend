@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { useAuthStore } from './AuthStore'
+import { useAuthStore } from './authStore'
 
 export const useJobStore = defineStore('jobStore', () => {
   const jobs = ref([])
@@ -90,7 +90,6 @@ export const useJobStore = defineStore('jobStore', () => {
 
       const updatedJob = await response.json()
 
-    
       const index = jobs.value.findIndex((job) => job.id === id)
       if (index !== -1) {
         jobs.value[index] = updatedJob

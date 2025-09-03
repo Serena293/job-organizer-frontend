@@ -2,7 +2,7 @@
 import router from '@/router'
 import { reactive } from 'vue'
 import { useToast } from 'primevue/usetoast'
-import { useAuthStore } from '@/stores/AuthStore'
+import { useAuthStore } from '@/stores/authStore'
 
 const form = reactive({
   type: 'Full-Time',
@@ -17,17 +17,15 @@ const form = reactive({
   cons: '',
   company: '',
 })
+
 const toast = useToast()
-const authStore = useAuthStore() 
+const authStore = useAuthStore()
 
 const handleSubmit = async () => {
+  //   console.log('Current token:', authStore.token) // ← Debug
+  // console.log('Is logged in:', authStore.isLoggedIn) // ← Debug
 
-    console.log('Current token:', authStore.token) // ← Debug
-  console.log('Is logged in:', authStore.isLoggedIn) // ← Debug
-
-
-  
-    if (!authStore.token) {
+  if (!authStore.token) {
     toast.add({
       severity: 'error',
       summary: 'Errore',
@@ -54,9 +52,7 @@ const handleSubmit = async () => {
   try {
     const response = await fetch('http://localhost:8080/jobs', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json',
-         'Authorization': `Bearer ${authStore.token}` 
-       },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${authStore.token}` },
       body: JSON.stringify(newJob),
     })
 
@@ -71,27 +67,25 @@ const handleSubmit = async () => {
       summary: 'Success',
       detail: 'Job added to Job Listening',
       life: 3000,
-    },
-
-  )
+    })
 
     router.push('/jobs')
   } catch (error) {
+    if (error.response) {
+      console.log('Response status:', error.response.status)
+      const errorText = await error.response.text()
+      console.log('Response text:', errorText)
+    }
 
-     if (error.response) {
-    console.log('Response status:', error.response.status)
-    const errorText = await error.response.text()
-    console.log('Response text:', errorText)
-  }
-    
-    toast.add({
-      severity: 'error',
-      summary: 'Errore',
-      detail: 'Error: ' + error,
-      life: 3000,
-    },
-    console.log('toast error') 
-)
+    toast.add(
+      {
+        severity: 'error',
+        summary: 'Errore',
+        detail: 'Error: ' + error,
+        life: 3000,
+      },
+      console.log('toast error'),
+    )
   }
 }
 </script>

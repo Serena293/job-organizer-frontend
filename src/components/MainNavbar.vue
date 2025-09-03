@@ -1,18 +1,16 @@
 <script setup>
-import {computed} from 'vue'
-import { RouterLink, useRoute } from 'vue-router';
-import { useAuthStore } from '@/stores/AuthStore';
+import { computed } from 'vue'
+import { RouterLink, useRoute } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore'
 
-const authStore = useAuthStore();
-const route = useRoute();
+const authStore = useAuthStore()
+const route = useRoute()
 
 const isActiveLink = (routePath) => {
   return route.path === routePath
 }
 
-
-const isLoggedIn = computed(() => authStore.isLoggedIn);
-
+const isLoggedIn = computed(() => authStore.isLoggedIn)
 </script>
 
 <template>
@@ -45,7 +43,7 @@ const isLoggedIn = computed(() => authStore.isLoggedIn);
           >Jobs</RouterLink
         >
       </li>
-      <li >
+      <li>
         <RouterLink
           to="/jobs/add"
           :class="[
@@ -57,9 +55,10 @@ const isLoggedIn = computed(() => authStore.isLoggedIn);
           ]"
           >Add Job</RouterLink
         >
-        </li>
-        <li v-if="isLoggedIn">
-        <RouterLink to="/profile"
+      </li>
+      <li v-if="isLoggedIn">
+        <RouterLink
+          to="/profile"
           :class="[
             isActiveLink('/profile') ? 'bg-blue-900' : 'hover:bg-gray-900 hover:text-whiet',
             'text-white',
@@ -67,10 +66,12 @@ const isLoggedIn = computed(() => authStore.isLoggedIn);
             'py-2',
             'rounded-md',
           ]"
-        >Profile</RouterLink>
+          >Profile</RouterLink
+        >
       </li>
-             <li v-else>
-        <RouterLink to="/login"
+      <li v-else>
+        <RouterLink
+          to="/login"
           :class="[
             isActiveLink('/login') ? 'bg-blue-900' : 'hover:bg-gray-900 hover:text-whiet',
             'text-white',
@@ -78,9 +79,9 @@ const isLoggedIn = computed(() => authStore.isLoggedIn);
             'py-2',
             'rounded-md',
           ]"
-        >Profile</RouterLink>
+          >Profile</RouterLink
+        >
       </li>
-     
     </ul>
   </nav>
 </template>

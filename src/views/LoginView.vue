@@ -75,6 +75,12 @@ const login = async (event) => {
             <RouterLink to="/register">Sign up</RouterLink>
           </span>
         </p>
+        <p class="pt-1">
+         Forgot your password?
+          <span class="text-blue-500 underline">
+            <RouterLink to="/forgot-password">Click here</RouterLink>
+          </span>
+        </p>
       </fieldset>
     </form>
   </section>

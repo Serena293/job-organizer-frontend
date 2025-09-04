@@ -17,11 +17,15 @@ export const useJobStore = defineStore('jobStore', () => {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-      })
+      }
+   
+    
+  ) 
       if (!response.ok) throw new Error('Fetch failed')
       jobs.value = await response.json()
     } finally {
       isLoading.value = false
+     
     }
   }
 

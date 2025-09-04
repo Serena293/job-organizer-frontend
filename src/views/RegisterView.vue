@@ -43,7 +43,7 @@ const createNewUser = async (event) => {
       detail: 'User Created',
       life: 3000,
     })
-    router.push('/profile')
+    router.push('/login')
   } else {
     toast.add({
       severity: 'error',

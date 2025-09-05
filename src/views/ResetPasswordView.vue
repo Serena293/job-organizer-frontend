@@ -41,6 +41,7 @@ const resetPassword = async () => {
         newPassword: newPassword.value,
         confirmPassword: confirmPassword.value
       })
+      
     })
 
     if (!response.ok) {

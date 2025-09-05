@@ -2,10 +2,17 @@
 import BackButton from '@/components/BackButton.vue'
 import { useAuthStore } from '@/stores/authStore'
 import { useRouter } from 'vue-router'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
+import DocumentForm from '@/components/DocumentForm.vue'
+
 
 const router = useRouter()
 const authStore = useAuthStore()
+const showUploadForm = ref(false)
+
+const toggleForm = () => {
+  showUploadForm.value = !showUploadForm.value
+}
 
 onMounted(() => {
   authStore.fetchProfile()
@@ -38,17 +45,27 @@ const handleLogout = () => {
             </button>
           </div>
         </div>
+<fieldset class="bg-white shadow rounded-2xl p-6">
+  <legend class="font-semibold text-gray-700 flex justify-between items-center">
+    Documents
+    </legend>
 
-        <fieldset class="bg-white shadow rounded-2xl p-6">
-          <h1 class="font-bold text-2xl">    {{ authStore.user?.firstName }} {{ authStore.user?.lastName }}</h1>
-          <h2 class="text-gray-600 text-lg">{{ authStore.user?.username }}</h2>
-           <p class="text-gray-500">{{ authStore.user?.email }}</p>
-        </fieldset>
 
-        <fieldset class="bg-white shadow rounded-2xl p-6">
-          <legend class="font-semibold text-gray-700">Documents</legend>
-          <p class="text-sm text-gray-500">Upload and manage your documents here.</p>
-        </fieldset>
+  <div class="mt-4 space-y-2">
+    <!-- qui farai il v-for per i documenti -->
+  </div>
+
+    <button 
+      @click="toggleForm" 
+      class="text-sm text-gray-500 hover:text-gray-700 flex ">
+      Upload document 
+      <i class="pi pi-plus text-sm pl-2"></i>
+    </button>
+  
+  <div v-if="showUploadForm" class="mt-4">
+    <DocumentForm mode="create" />
+  </div>
+</fieldset>
       </div>
 
       <div class="col-span-1">

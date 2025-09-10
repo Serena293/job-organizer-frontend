@@ -1,15 +1,32 @@
 <script setup>
-import { ref } from 'vue'
+import { reactive } from 'vue'
+import { useProfileStore } from '@/stores/profileStore'
 
-const selectedFile = ref(null)
+const profileStore = useProfileStore()
 
-const saveDocument  = () => {
-    console.log('Document Saved')
-}
+const form = reactive({
+  documentName: '',
+  documentDescription: '',
+  documentPath: '', // al momento solo stringa
+})
 
-const onFileSelected = (event) => 
- {
-  selectedFile.value = event.target.files[0] || null
+const saveDocument = async () => {
+  const newDocument = {
+    documentName: form.documentName,
+    documentDescription: form.documentDescription,
+    documentPath: form.documentPath, // puoi metterci un placeholder tipo "cv.pdf"
+  }
+
+  try {
+    await profileStore.addDocument(newDocument)
+
+    // reset campi
+    form.documentName = ''
+    form.documentDescription = ''
+    form.documentPath = ''
+  } catch (error) {
+    console.error(error)
+  }
 }
 </script>
 
@@ -18,27 +35,40 @@ const onFileSelected = (event) =>
     <fieldset class="space-y-3">
       <div class="flex flex-col">
         <label for="document-name">Document Name</label>
-        <input id="document-name" name="document-name" placeholder="Eg. Curriculum Vitae" class="border rounded px-2 py-1 text-sm w-80"/>
+        <input
+          v-model="form.documentName"
+          id="document-name"
+          name="document-name"
+          placeholder="Eg. Curriculum Vitae"
+          class="border rounded px-2 py-1 text-sm w-80"
+        />
       </div>
 
       <div class="flex flex-col">
         <label for="document-description">Document Description</label>
-        <textarea id="document-description" name="document-description" placeholder="Eg. CV for FrontEnd roles" class="border rounded px-2 py-1 text-sm w-80"></textarea>
+        <textarea
+          v-model="form.documentDescription"
+          id="document-description"
+          name="document-description"
+          placeholder="Eg. CV for FrontEnd roles"
+          class="border rounded px-2 py-1 text-sm w-80"
+        ></textarea>
       </div>
 
       <div class="flex flex-col">
-        <label for="document-path" class="underline cursor-pointer">
-          Select Document
-        </label>
-      
-        <input id="document-path" name="document-path" type="file" class="hidden" @change="onFileSelected"/>
-        
-        <span v-if="selectedFile" class="text-sm text-gray-700 mt-1">
-          Selezionato: {{ selectedFile.name }}
-        </span>
+        <label for="document-path">Document Path (temporaneo)</label>
+        <input
+          v-model="form.documentPath"
+          id="document-path"
+          name="document-path"
+          placeholder="Eg. cv.pdf"
+          class="border rounded px-2 py-1 text-sm w-80"
+        />
       </div>
 
-      <button class="border rounded px-3 py-1 mt-2 bg-blue-500 text-white hover:bg-blue-600 transition">
+      <button
+        class="border rounded px-3 py-1 mt-2 bg-blue-500 text-white hover:bg-blue-600 transition"
+      >
         Save
       </button>
     </fieldset>

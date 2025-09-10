@@ -22,10 +22,7 @@ const toast = useToast()
 const authStore = useAuthStore()
 
 const handleSubmit = async () => {
-  //   console.log('Current token:', authStore.token) // ← Debug
-  // console.log('Is logged in:', authStore.isLoggedIn) // ← Debug
-
-  if (!authStore.token) {
+   if (!authStore.token) {
     toast.add({
       severity: 'error',
       summary: 'Errore',
@@ -52,7 +49,8 @@ const handleSubmit = async () => {
   try {
     const response = await fetch('http://localhost:8080/jobs', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${authStore.token}` },
+      headers: { 'Content-Type': 'application/json',
+       Authorization: `Bearer ${authStore.token}` },
       body: JSON.stringify(newJob),
     })
 

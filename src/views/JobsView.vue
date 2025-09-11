@@ -5,10 +5,18 @@ import { useJobStore } from '@/stores/jobStore'
 // import { useRouter } from 'vue-router';
 // import AddJob from './AddJob.vue';
 import BackButton from '@/components/BackButton.vue'
+import { onMounted } from 'vue'
 
 const authStore = useAuthStore()
 const jobStore = useJobStore()
-console.log(jobStore.jobs.value)
+// console.log(jobStore.jobs.value)
+console.log(jobStore.jobs.length)
+console.log(authStore.isLoggedIn)
+
+onMounted(() => {
+  jobStore.fetchJobs()
+})
+
 </script>
 
 <template>

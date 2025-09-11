@@ -8,9 +8,6 @@ import { useJobStore } from '@/stores/jobStore'
 const store = useJobStore();
 const toast = useToast();
 
-onMounted(() => {
-  store.fetchJobs()
-})
 
 const handleDelete = async (id) => {
   const ok = await store.deleteJob(id)

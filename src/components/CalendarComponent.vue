@@ -1,7 +1,11 @@
 <script setup>
 import { ref, computed } from 'vue'
+import { useEventStore } from '@/stores/eventStore'
+import { useAuthStore } from '@/stores/authStore'
 
-// Date corrente
+const eventStore = useEventStore()
+const authStore = useAuthStore()
+
 const now = new Date()
 const currentYear = now.getFullYear()
 const currentMonthIndex = now.getMonth()
@@ -41,9 +45,35 @@ const monthNames = [
 const daysOfTheWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 const month = ref(monthNames[currentMonthIndex])
+const selectedDay = ref(null)
+const newEventTitle = ref('')
 
 function getDaysInMonth(year, monthIndex) {
   return new Date(year, monthIndex + 1, 0).getDate()
+}
+
+const eventsForDay = (day) => {
+  const dateStr = `${currentYear}-${currentMonthIndex + 1}-${day}`
+  return eventStore.events.filter((e) => e.date === dateStr)
+}
+
+const handleDayClick = (day) => {
+  if (!authStore.isLoggedIn || !day) return
+  if (selectedDay.value === day) {
+    selectedDay.value = null
+    newEventTitle.value = ''
+  } else {
+    selectedDay.value = day
+    newEventTitle.value = ''
+  }
+}
+
+const saveEvent = () => {
+  if (!newEventTitle.value || !selectedDay.value) return
+  const dateStr = `${currentYear}-${currentMonthIndex + 1}-${selectedDay.value}`
+  eventStore.addEvent({ title: newEventTitle.value, date: dateStr })
+  selectedDay.value = null
+  newEventTitle.value = ''
 }
 </script>
 
@@ -59,11 +89,38 @@ function getDaysInMonth(year, monthIndex) {
       <div
         v-for="(day, index) in days"
         :key="index"
-        class="p-2 border rounded text-center"
-        :class="day ? classToday(day) : 'bg-transparent border-none'"
+        class="p-2 border rounded text-center relative cursor-pointer transition-colors"
+        :class="[
+          day ? classToday(day) : 'bg-transparent border-none',
+          selectedDay === day ? 'bg-blue-200 border-blue-400' : 'hover:bg-gray-200',
+        ]"
+        @click="handleDayClick(day)"
       >
         {{ day || '' }}
+        <span
+          v-if="day && eventsForDay(day).length > 0"
+          class="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 rounded-full bg-blue-500"
+        ></span>
       </div>
+    </div>
+    <div v-if="selectedDay" class="mt-4 p-4 bg-white rounded shadow relative">
+      <button
+        @click="selectedDay = null"
+        class="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+      >
+        ✕
+      </button>
+      <h3 class="font-semibold mb-2">
+        Add Event for {{ selectedDay }}/{{ currentMonthIndex + 1 }}/{{ currentYear }}
+      </h3>
+      <input
+        v-model="newEventTitle"
+        placeholder="Event title"
+        class="border rounded px-2 py-1 w-full mb-2"
+      />
+      <button @click="saveEvent" class="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+        Save
+      </button>
     </div>
   </section>
 </template>

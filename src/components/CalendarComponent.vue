@@ -1,15 +1,19 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useEventStore } from '@/stores/eventStore'
 import { useAuthStore } from '@/stores/authStore'
+import EventItem from './EventItem.vue'
 
 const eventStore = useEventStore()
 const authStore = useAuthStore()
+const selectedDayEvents = ref([])
 
 const now = new Date()
 const currentYear = now.getFullYear()
 const currentMonthIndex = now.getMonth()
 const today = now.getDate()
+
+
 
 const firstDayIndex = new Date(currentYear, currentMonthIndex, 1).getDay()
 const adjustedFirstDay = (firstDayIndex + 6) % 7
@@ -47,34 +51,88 @@ const daysOfTheWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 const month = ref(monthNames[currentMonthIndex])
 const selectedDay = ref(null)
 const newEventTitle = ref('')
+const newEventDetails = ref('')
+const daysWithEvents = ref([])
 
 function getDaysInMonth(year, monthIndex) {
   return new Date(year, monthIndex + 1, 0).getDate()
 }
 
-const eventsForDay = (day) => {
-  const dateStr = `${currentYear}-${currentMonthIndex + 1}-${day}`
-  return eventStore.events.filter((e) => e.date === dateStr)
+const eventsForDay = async (day) => {
+  if (!day) return []
+  const dateStr = `${String(day).padStart(2, '0')}-${String(currentMonthIndex + 1).padStart(2, '0')}-${currentYear}`
+  const events = await eventStore.fetchEventsByDate(dateStr)
+  return events
 }
 
-const handleDayClick = (day) => {
+const handleDayClick = async (day) => {
   if (!authStore.isLoggedIn || !day) return
+
   if (selectedDay.value === day) {
     selectedDay.value = null
     newEventTitle.value = ''
+    newEventDetails.value = ''
   } else {
     selectedDay.value = day
     newEventTitle.value = ''
+    newEventDetails.value = ''
+    selectedDayEvents.value = await eventsForDay(day)
   }
 }
-
-const saveEvent = () => {
+const saveEvent = async () => {
   if (!newEventTitle.value || !selectedDay.value) return
-  const dateStr = `${currentYear}-${currentMonthIndex + 1}-${selectedDay.value}`
-  eventStore.addEvent({ title: newEventTitle.value, date: dateStr })
+
+  const dateStr = `${String(selectedDay.value).padStart(2, '0')}-${String(currentMonthIndex + 1).padStart(2, '0')}-${currentYear}`
+  const newEvent = {
+    eventTitle: newEventTitle.value,
+    eventDescription: newEventDetails.value,
+    eventDate: dateStr,
+  }
+  const savedEvent = await eventStore.addEvent(newEvent)
+
+  selectedDayEvents.value.push(savedEvent)
+
   selectedDay.value = null
   newEventTitle.value = ''
+  newEventDetails.value = ''
 }
+
+onMounted(() => {
+  if (authStore.isLoggedIn) {
+    eventStore.fetchEvents()
+  }
+})
+const fetchAllEvents = async () => {
+  await eventStore.fetchEvents() 
+daysWithEvents.value = eventStore.events
+  .filter(e => e.eventDate) 
+  .filter(e => {
+    const [day, month, year] = e.eventDate.split('-').map(Number)
+    return month === currentMonthIndex + 1 && year === currentYear
+  })
+  .map(e => Number(e.eventDate.split('-')[0]))
+
+}
+onMounted(fetchAllEvents)
+
+const updateDaysWithEvents = () => {
+  daysWithEvents.value = eventStore.events
+    .filter(e => e.eventDate) 
+    .filter(e => {
+      const [day, month, year] = e.eventDate.split('-').map(Number)
+      return month === currentMonthIndex + 1 && year === currentYear
+    })
+    .map(e => Number(e.eventDate.split('-')[0]))
+}
+watch(
+  () => eventStore.events,
+  () => {
+    updateDaysWithEvents()
+  },
+  { deep: true, immediate: true }
+)
+
+
 </script>
 
 <template>
@@ -97,10 +155,11 @@ const saveEvent = () => {
         @click="handleDayClick(day)"
       >
         {{ day || '' }}
-        <span
-          v-if="day && eventsForDay(day).length > 0"
-          class="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 rounded-full bg-blue-500"
-        ></span>
+       <span
+  v-if="day && daysWithEvents.includes(day)"
+  class="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 rounded-full bg-blue-500"
+></span>
+
       </div>
     </div>
     <div v-if="selectedDay" class="mt-4 p-4 bg-white rounded shadow relative">
@@ -113,11 +172,21 @@ const saveEvent = () => {
       <h3 class="font-semibold mb-2">
         Add Event for {{ selectedDay }}/{{ currentMonthIndex + 1 }}/{{ currentYear }}
       </h3>
+      <div class="mb-4">
+        <EventItem v-for="event in selectedDayEvents" :key="event.id" :event="event" />
+      </div>
+
+      <h4 class="font-semibold mb-1">Add New Event</h4>
       <input
         v-model="newEventTitle"
         placeholder="Event title"
         class="border rounded px-2 py-1 w-full mb-2"
       />
+      <textarea
+        v-model="newEventDetails"
+        placeholder="Event Details"
+        class="border rounded px-2 py-1 w-full mb-2"
+      ></textarea>
       <button @click="saveEvent" class="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
         Save
       </button>

@@ -3,6 +3,9 @@ import router from '@/router'
 import { reactive } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { useAuthStore } from '@/stores/authStore'
+import { useInputClasses } from '@/utilities/useInputClasses'
+
+const {normal, error, valid} = useInputClasses()
 
 const form = reactive({
   type: 'Full-Time',

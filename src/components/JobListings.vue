@@ -1,5 +1,4 @@
 <script setup>
-import { onMounted} from 'vue'
 import JobCard from "./JobCard.vue"
 import { useToast } from 'primevue/usetoast'
 import { useJobStore } from '@/stores/jobStore'

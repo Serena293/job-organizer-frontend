@@ -4,7 +4,7 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: localStorage.getItem('jwt') || null,
     email: null,
-    user: null, 
+    user: null,
   }),
 
   getters: {
@@ -20,7 +20,6 @@ export const useAuthStore = defineStore('auth', {
       this.fetchProfile()
     },
 
- 
     logout() {
       this.token = null
       this.email = null
@@ -28,7 +27,6 @@ export const useAuthStore = defineStore('auth', {
       localStorage.removeItem('jwt')
     },
 
-    
     async fetchProfile() {
       if (!this.token) return
 
@@ -36,9 +34,9 @@ export const useAuthStore = defineStore('auth', {
         const response = await fetch('http://localhost:8080/api/auth/me', {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${this.token}`,
-            'Content-Type': 'application/json'
-          }
+            Authorization: `Bearer ${this.token}`,
+            'Content-Type': 'application/json',
+          },
         })
 
         if (!response.ok) {
@@ -47,12 +45,39 @@ export const useAuthStore = defineStore('auth', {
 
         const data = await response.json()
         this.user = data
-        this.email = data.email 
+        this.email = data.email
       } catch (error) {
         console.error('Errore fetchProfile:', error)
         // this.logout()
         console.log(this.token)
       }
-    }
-  }
+    },
+    async updateProfile(updatedData) {
+      if (!this.token) throw new Error('Missing token')
+
+      try {
+        const response = await fetch('http://localhost:8080/api/auth/me', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.token}`,
+          },
+          body: JSON.stringify(updatedData),
+        })
+
+        if (!response.ok) {
+          const errorText = await response.text()
+          throw new Error(`Update failed: ${errorText}`)
+        }
+
+        const data = await response.json()
+        this.user = data
+        this.email = data.email
+        return data
+      } catch (error) {
+        console.error('Errore updateProfile:', error)
+        throw error
+      }
+    },
+  },
 })

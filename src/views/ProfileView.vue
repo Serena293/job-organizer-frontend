@@ -6,29 +6,16 @@ import { useRouter } from 'vue-router'
 import { onMounted, ref, reactive } from 'vue'
 import DocumentForm from '@/components/DocumentForm.vue'
 import NoteSection from '@/components/NoteSection.vue'
+import EditProfile from '@/components/EditProfile.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const profileStore = useProfileStore()
 
-const noteBeingEdited = ref(null)
-
-const showNoteForm = ref(false)
-
-const toggleNoteForm = () => {
-  if (noteBeingEdited.value) return
-  showNoteForm.value = !showNoteForm.value
-}
-const editNoteHandler = (note) => {
-  noteBeingEdited.value = note
-  showNoteForm.value = true
-}
-const cancelNoteEdit = () => {
-  noteBeingEdited.value = null
-  showNoteForm.value = false
-}
+const showEditProfile = ref(false)
 const showUploadForm = ref(false)
 const editMode = ref(false)
+
 const editingDoc = reactive({
   id: null,
   documentName: '',
@@ -60,6 +47,7 @@ const getDocumentIcon = (path) => {
   if (path.endsWith('.jpg') || path.endsWith('.png')) return 'pi pi-image'
   return 'pi pi-file'
 }
+
 
 const startEdit = (doc) => {
   editingDoc.id = doc.id
@@ -93,6 +81,16 @@ const deleteDoc = async (id) => {
     await profileStore.deleteDocument(id)
   }
 }
+
+const handleSaveProfile = async (updatedData) => {
+  try {
+    await authStore.updateProfile(updatedData)
+    showEditProfile.value = false
+  } catch (err) {
+    console.error('Errore aggiornamento profilo:', err)
+    alert('Update failed, check console.')
+  }
+}
 </script>
 
 <template>
@@ -104,9 +102,10 @@ const deleteDoc = async (id) => {
             <BackButton />
             <div class="flex gap-3">
               <button
+                @click="showEditProfile = !showEditProfile"
                 class="sm:py-0 sm:h-10 sm:self-center text-blue-700 font-semibold border border-blue-700 px-2 py-1 rounded-full hover:bg-blue-100"
               >
-                Edit Profile
+                 {{ showEditProfile ? 'Close Edit' : 'Edit Profile' }}
               </button>
               <button
                 @click="handleLogout"
@@ -123,6 +122,12 @@ const deleteDoc = async (id) => {
             <h2 class="text-gray-600 text-lg">{{ authStore.user?.username }}</h2>
             <p class="text-gray-500">{{ authStore.user?.email }}</p>
           </div>
+           <EditProfile
+            v-if="showEditProfile"
+            :user="authStore.user"
+            @save="handleSaveProfile"
+            @cancel="showEditProfile = false"
+          />
         </div>
 
         <!-- Documents Section -->
@@ -211,4 +216,7 @@ const deleteDoc = async (id) => {
       <NoteSection/>
     </div>
   </section>
+ 
+
+
 </template>

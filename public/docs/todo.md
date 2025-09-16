@@ -46,9 +46,8 @@
 - Hosting frontend (S3 static o Amplify)
 - Gestione sicurezza, CORS e variabili ambiente
 
----
 
-## 🔄 Ordine consigliato di implementazione
+## 🔄 Ordine di implementazione
 
 1. Backend per eventi  
 2. Visualizzazione eventi sul calendario  

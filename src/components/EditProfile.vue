@@ -24,7 +24,7 @@ const saveChanges = () => {
   emit('save', {
     email: form.value.email,
     username: form.value.username,
-    password: form.value.password || undefined, // solo se cambiata
+    password: form.value.password || undefined, 
   })
 }
 

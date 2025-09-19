@@ -21,7 +21,12 @@ const editingDoc = reactive({
   documentName: '',
   documentDescription: '',
   documentPath: '',
+  file: null,
 })
+
+const handleFileChange = (event) => {
+  editingDoc.file = event.target.files[0] || null
+}
 
 const toggleForm = () => {
   showUploadForm.value = !showUploadForm.value
@@ -48,7 +53,6 @@ const getDocumentIcon = (path) => {
   return 'pi pi-file'
 }
 
-
 const startEdit = (doc) => {
   editingDoc.id = doc.id
   editingDoc.documentName = doc.documentName
@@ -59,6 +63,14 @@ const startEdit = (doc) => {
 }
 
 const saveEdit = async () => {
+  const formData = new FormData()
+  formData.append('documentName', editingDoc.documentName)
+  formData.append('documentDescription', editingDoc.documentDescription)
+  
+  if (editingDoc.file) {
+    formData.append('file', editingDoc.file)
+  }
+   
   await profileStore.updateDocument(editingDoc.id, {
     documentName: editingDoc.documentName,
     documentDescription: editingDoc.documentDescription,
@@ -74,6 +86,7 @@ const resetEditingDoc = () => {
   editingDoc.documentName = ''
   editingDoc.documentDescription = ''
   editingDoc.documentPath = ''
+  editingDoc.file= null
 }
 
 const deleteDoc = async (id) => {
@@ -105,7 +118,7 @@ const handleSaveProfile = async (updatedData) => {
                 @click="showEditProfile = !showEditProfile"
                 class="sm:py-0 sm:h-10 sm:self-center text-blue-700 font-semibold border border-blue-700 px-2 py-1 rounded-full hover:bg-blue-100"
               >
-                 {{ showEditProfile ? 'Close Edit' : 'Edit Profile' }}
+                {{ showEditProfile ? 'Close Edit' : 'Edit Profile' }}
               </button>
               <button
                 @click="handleLogout"
@@ -122,7 +135,7 @@ const handleSaveProfile = async (updatedData) => {
             <h2 class="text-gray-600 text-lg">{{ authStore.user?.username }}</h2>
             <p class="text-gray-500">{{ authStore.user?.email }}</p>
           </div>
-           <EditProfile
+          <EditProfile
             v-if="showEditProfile"
             :user="authStore.user"
             @save="handleSaveProfile"
@@ -149,6 +162,7 @@ const handleSaveProfile = async (updatedData) => {
                   <p class="text-sm text-gray-500">{{ doc.documentDescription }}</p>
                 </div>
               </div>
+              
               <div class="flex gap-2">
                 <button
                   @click="startEdit(doc)"
@@ -194,13 +208,29 @@ const handleSaveProfile = async (updatedData) => {
                   class="border rounded px-2 py-1 w-full"
                 ></textarea>
               </div>
-              <div>
+              <!-- <div>
                 <label for="path" class="block text-sm font-medium">Path</label>
                 <input
                   v-model="editingDoc.documentPath"
                   id="path"
                   class="border rounded px-2 py-1 w-full"
                 />
+              </div>   -->
+               
+                <div>
+                <label for="file" class="block text-sm font-medium">Change File</label>
+                <input
+                  type="file"
+                  @change="handleFileChange"
+                  id="file"
+                  class="border rounded px-2 py-1 w-full"
+                />
+                <p v-if="editingDoc.file" class="text-sm text-gray-600 mt-1">
+                  New file: {{ editingDoc.file.name }}
+                </p>
+                <p v-else class="text-sm text-gray-500 mt-1">
+                  Current file: {{ editingDoc.documentPath }}
+                </p>
               </div>
               <button
                 type="submit"
@@ -213,10 +243,7 @@ const handleSaveProfile = async (updatedData) => {
         </fieldset>
       </div>
       <!-- notes -->
-      <NoteSection/>
+      <NoteSection />
     </div>
   </section>
- 
-
-
 </template>

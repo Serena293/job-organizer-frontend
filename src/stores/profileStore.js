@@ -10,30 +10,36 @@ export const useProfileStore = defineStore('profileStore', () => {
   const isLoading = ref(false)
   const error = ref(null)
 
-  const fetchWithAuth = async (url, options = {}) => {
-    const token = authStore.token
-    if (!token) {
-      throw new Error('Missing Token')
-    }
-
-    const defaultOptions = {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        ...options.headers
-      }
-    }
-
-    const response = await fetch(url, { ...defaultOptions, ...options })
-    
-    if (!response.ok) {
-      const errorText = await response.text()
-      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
-    }
-    
-    return response
+ const fetchWithAuth = async (url, options = {}) => {
+  const token = authStore.token
+  if (!token) {
+    throw new Error('Missing Token')
   }
 
+  const headers = {
+    'Authorization': `Bearer ${token}`
+  }
+
+  if (!(options.body instanceof FormData) && !options.headers?.['Content-Type']) {
+    headers['Content-Type'] = 'application/json'
+  }
+
+  const defaultOptions = {
+    headers: {
+      ...headers,
+      ...options.headers
+    }
+  }
+
+  const response = await fetch(url, { ...defaultOptions, ...options })
+  
+  if (!response.ok) {
+    const errorText = await response.text()
+    throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
+  }
+  
+  return response
+}
   //NOTES 
   const fetchNotes = async () => {
     isLoading.value = true
@@ -58,8 +64,6 @@ export const useProfileStore = defineStore('profileStore', () => {
         method: 'POST',
         body: JSON.stringify(newNote)
       })
-
-       console.log('Risposta del server:', response)
 
       const savedNote = await response.json()
        console.log("nota salvata", savedNote)
@@ -133,14 +137,24 @@ export const useProfileStore = defineStore('profileStore', () => {
     }
   }
 
-  const addDocument = async (newDocument) => {
+  const addDocument = async (formData) => {
     isLoading.value = true
     error.value = null
     try {
-      const response = await fetchWithAuth('http://localhost:8080/documents', {
+      const token = authStore.token
+      if(!token) throw new Error ('Missing Token')
+
+      const response = await fetchWithAuth('http://localhost:8080/documents/upload', {
         method: 'POST',
-        body: JSON.stringify(newDocument)
+
+        body: formData
       })
+
+    //    if (!response.ok) {
+    //   const errorText = await response.text()
+    //   throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
+    // }
+
 
       const savedDoc = await response.json()
       documents.value.push(savedDoc)

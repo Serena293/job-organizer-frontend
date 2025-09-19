@@ -8,7 +8,7 @@ import { useInputClasses } from '@/utilities/useInputClasses'
 const {normal, error, valid} = useInputClasses()
 
 const form = reactive({
-  type: 'Full-Time',
+  type: 'FULL_TIME',
   title: '',
   status: 'PENDING',
   description: '',

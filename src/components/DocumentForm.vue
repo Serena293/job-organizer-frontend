@@ -1,31 +1,58 @@
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { useProfileStore } from '@/stores/profileStore'
+import { useToast } from 'primevue/usetoast'
 
 const profileStore = useProfileStore()
+const toast = useToast()
+
+const selectedFile = ref(null)
 
 const form = reactive({
   documentName: '',
   documentDescription: '',
-  documentPath: '', // al momento solo stringa
 })
 
+const handleFileChange = (event) => {
+  selectedFile.value = event.target.files[0] || null
+}
 const saveDocument = async () => {
-  const newDocument = {
-    documentName: form.documentName,
-    documentDescription: form.documentDescription,
-    documentPath: form.documentPath, // puoi metterci un placeholder tipo "cv.pdf"
+  if (!selectedFile.value) {
+    toast.add({
+      severity: 'warn',
+      summary: 'No file selected',
+      detail: 'Please select a file before uploading.',
+    })
+    return
   }
 
   try {
-    await profileStore.addDocument(newDocument)
+    const formData = new FormData()
+    formData.append('files', selectedFile.value)
+    formData.append('documentName', form.documentName)
+    formData.append('documentDescription', form.documentDescription)
 
-    // reset campi
+    await profileStore.addDocument(formData)
+
+    const fileName = selectedFile.value.name
     form.documentName = ''
     form.documentDescription = ''
-    form.documentPath = ''
+    selectedFile.value = null
+    const fileInput = document.getElementById('file')
+    if (fileInput) fileInput.value = ''
+
+    toast.add({
+      severity: 'success',
+      summary: 'Upload successful',
+      detail: fileName,
+    })
   } catch (error) {
     console.error(error)
+    toast.add({
+      severity: 'error',
+      summary: 'Upload failed',
+      detail: error.message || 'Check console.',
+    })
   }
 }
 </script>
@@ -56,20 +83,25 @@ const saveDocument = async () => {
       </div>
 
       <div class="flex flex-col">
-        <label for="document-path">Document Path (temporaneo)</label>
+        <label for="file">Select File</label>
         <input
-          v-model="form.documentPath"
-          id="document-path"
-          name="document-path"
-          placeholder="Eg. cv.pdf"
+          type="file"
+          @change="handleFileChange"
+          id="file"
+          name="file"
           class="border rounded px-2 py-1 text-sm w-80"
         />
+
+        <p v-if="selectedFile" class="text-sm text-gray-600 mt-1">
+          Selected file: {{ selectedFile.documentName }}
+        </p>
       </div>
 
       <button
         class="border rounded px-3 py-1 mt-2 bg-blue-500 text-white hover:bg-blue-600 transition"
+        type="submit"
       >
-        Save
+        Upload
       </button>
     </fieldset>
   </form>

@@ -16,14 +16,14 @@ const errors = reactive({
   email: '',
   password: '',
 })
-const serverError = ref(null)
+const serverError = ref('')
 
 const emailClass = computed(() => (errors.email ? error : normal))
-const passClass = computed(()=>(errors.password? error :normal))
+const passClass = computed(() => (errors.password ? error : normal))
 
 const validateForm = () => {
- errors.email = ''
- errors.password = ''
+  errors.email = ''
+  errors.password = ''
 
   if (!email.value.trim()) {
     errors.email = 'Mandatory field'
@@ -33,14 +33,12 @@ const validateForm = () => {
 
   if (!password.value.trim()) {
     errors.password = 'Insert Password'
-  } else if( password.value.length < 8 ){
+  } else if (password.value.length < 8) {
     errors.password = 'Password to short'
   }
-  
-  // console.log(serverError.value)
-  // console.log(Object.keys(errors).length)
+
   console.log(errors.email === '' || errors.password === '')
-  
+
   return errors.email === '' && errors.password === ''
 }
 
@@ -48,12 +46,15 @@ const login = async (event) => {
   event.preventDefault()
   serverError.value = ''
   // console.log(serverError.value)
-  if (!validateForm()) { console.log('non validato'); return}
+  if (!validateForm()) {
+    console.log('non validato')
+    return
+  }
   try {
     const response = await fetch('http://localhost:8080/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email.value, password: password.value}),
+      body: JSON.stringify({ email: email.value, password: password.value }),
     })
 
     if (response.ok) {
@@ -62,16 +63,14 @@ const login = async (event) => {
       router.push('/profile')
     } else {
       const errorData = await response.json()
-      // console.log(errorData,'errorData')
-      // console.log(errorData.error, 'error in error data')
+
       serverError.value = errorData.error || 'Incorrect Email or Password'
-        // console.log(serverError.value, 'server error')      
-      // console.error('Login failed', errorData)
+
       throw new Error(errorData.error || 'Incorrect Email or password')
     }
   } catch (error) {
     serverError.value = 'Incorrect Email or Password'
-  
+
     console.error(error)
   }
 }
@@ -113,7 +112,7 @@ const login = async (event) => {
             :class="passClass"
           />
           <p v-if="errors.password" class="text-red-500 text-sm mt-1">{{ errors.password }}</p>
-           <p v-if="serverError" class="text-red-500 text-sm mt-1">{{ serverError}}</p>
+          <p v-if="serverError" class="text-red-500 text-sm mt-1">{{ serverError }}</p>
         </div>
 
         <button

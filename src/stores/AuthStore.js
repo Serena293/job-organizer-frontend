@@ -49,7 +49,7 @@ export const useAuthStore = defineStore('auth', {
       } catch (error) {
         console.error('Errore fetchProfile:', error)
         // this.logout()
-        console.log(this.token)
+        // console.log(this.token)
       }
     },
     async updateProfile(updatedData) {

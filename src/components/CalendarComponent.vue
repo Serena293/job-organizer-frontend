@@ -7,6 +7,7 @@ import EventItem from './EventItem.vue'
 const eventStore = useEventStore()
 const authStore = useAuthStore()
 const selectedDayEvents = ref([])
+// const isLoggedIn = authStore.isLoggedIn
 
 const now = new Date()
 const currentYear = now.getFullYear()

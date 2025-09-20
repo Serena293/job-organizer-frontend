@@ -6,14 +6,15 @@ export const useEventStore = defineStore('eventStore', () => {
   const events = ref([])
   const selectedEvent = ref(null)
   const isLoading = ref(false)
+  const authStore = useAuthStore()
+  const token = authStore.token
 
- 
   const fetchEvents = async () => {
+    if (!authStore.isLoggedIn || !authStore.token) {
+      return []
+    }
     isLoading.value = true
     try {
-      const authStore = useAuthStore()
-      const token = authStore.token
-
       const response = await fetch('http://localhost:8080/events', {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -29,11 +30,11 @@ export const useEventStore = defineStore('eventStore', () => {
   }
 
   const fetchEventsByDate = async (date) => {
+    if (!authStore.isLoggedIn || !authStore.token) {
+      return []
+    }
     isLoading.value = true
     try {
-      const authStore = useAuthStore()
-      const token = authStore.token
-
       const response = await fetch(`http://localhost:8080/events/by-date?date=${date}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -49,8 +50,9 @@ export const useEventStore = defineStore('eventStore', () => {
   }
 
   const addEvent = async (eventData) => {
-    const authStore = useAuthStore()
-    const token = authStore.token
+    if (!authStore.isLoggedIn || !authStore.token) {
+      return []
+    }
 
     const response = await fetch('http://localhost:8080/events', {
       method: 'POST',
@@ -68,8 +70,9 @@ export const useEventStore = defineStore('eventStore', () => {
   }
 
   const updateEvent = async (id, updatedData) => {
-    const authStore = useAuthStore()
-    const token = authStore.token
+    if (!authStore.isLoggedIn || !authStore.token) {
+      return []
+    }
 
     const response = await fetch(`http://localhost:8080/events/${id}`, {
       method: 'PUT',
@@ -95,8 +98,9 @@ export const useEventStore = defineStore('eventStore', () => {
   }
 
   const deleteEvent = async (id) => {
-    const authStore = useAuthStore()
-    const token = authStore.token
+    if (!authStore.isLoggedIn || !authStore.token) {
+      return []
+    }
 
     const response = await fetch(`http://localhost:8080/events/${id}`, {
       method: 'DELETE',

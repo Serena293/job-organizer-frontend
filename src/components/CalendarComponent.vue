@@ -14,8 +14,6 @@ const currentYear = now.getFullYear()
 const currentMonthIndex = now.getMonth()
 const today = now.getDate()
 
-
-
 const firstDayIndex = new Date(currentYear, currentMonthIndex, 1).getDay()
 const adjustedFirstDay = (firstDayIndex + 6) % 7
 
@@ -104,93 +102,105 @@ onMounted(() => {
   }
 })
 const fetchAllEvents = async () => {
-  await eventStore.fetchEvents() 
-daysWithEvents.value = eventStore.events
-  .filter(e => e.eventDate) 
-  .filter(e => {
-    const [day, month, year] = e.eventDate.split('-').map(Number)
-    return month === currentMonthIndex + 1 && year === currentYear
-  })
-  .map(e => Number(e.eventDate.split('-')[0]))
-
+  await eventStore.fetchEvents()
+  daysWithEvents.value = eventStore.events
+    .filter((e) => e.eventDate)
+    .filter((e) => {
+      const [day, month, year] = e.eventDate.split('-').map(Number)
+      return month === currentMonthIndex + 1 && year === currentYear
+    })
+    .map((e) => Number(e.eventDate.split('-')[0]))
 }
 onMounted(fetchAllEvents)
 
 const updateDaysWithEvents = () => {
   daysWithEvents.value = eventStore.events
-    .filter(e => e.eventDate) 
-    .filter(e => {
+    .filter((e) => e.eventDate)
+    .filter((e) => {
       const [day, month, year] = e.eventDate.split('-').map(Number)
       return month === currentMonthIndex + 1 && year === currentYear
     })
-    .map(e => Number(e.eventDate.split('-')[0]))
+    .map((e) => Number(e.eventDate.split('-')[0]))
 }
 watch(
   () => eventStore.events,
   () => {
     updateDaysWithEvents()
   },
-  { deep: true, immediate: true }
+  { deep: true, immediate: true },
 )
-
-
 </script>
 
 <template>
-  <section class="p-6 max-w-md mx-auto">
-    <h1 class="text-2xl font-bold mb-4 text-center">{{ month }} {{ currentYear }}</h1>
+  <section class="calendar-container">
+    <h1 class="heading-medium text-center mb-4">{{ month }} {{ currentYear }}</h1>
 
-    <div class="grid grid-cols-7 gap-2 text-center font-semibold mb-2">
+    <!-- Days of the week -->
+    <div class="calendar-grid mb-2">
       <div v-for="day in daysOfTheWeek" :key="day">{{ day }}</div>
     </div>
 
-    <div class="grid grid-cols-7 gap-2 text-center">
+    <!-- Days -->
+    <div class="calendar-grid">
       <div
         v-for="(day, index) in days"
         :key="index"
-        class="p-2 border rounded text-center relative cursor-pointer transition-colors"
+        class="calendar-day"
         :class="[
-          day ? classToday(day) : 'bg-transparent border-none',
+          day ? classToday(day) : 'calendar-day-empty',
           selectedDay === day ? 'bg-blue-200 border-blue-400' : 'hover:bg-gray-200',
         ]"
         @click="handleDayClick(day)"
+        :aria-label="day ? `Select day ${day}` : ''"
       >
         {{ day || '' }}
-       <span
-  v-if="day && daysWithEvents.includes(day)"
-  class="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 rounded-full bg-blue-500"
-></span>
-
+        <span
+          v-if="day && daysWithEvents.includes(day)"
+          class="event-indicator"
+        ></span>
       </div>
     </div>
-    <div v-if="selectedDay" class="mt-4 p-4 bg-white rounded shadow relative">
+
+    <!-- Selected day events -->
+    <div v-if="selectedDay" class="mt-4 p-4 section-card relative">
       <button
         @click="selectedDay = null"
-        class="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+        class="btn-text absolute top-2 right-2"
+        aria-label="Close event panel"
       >
         ✕
       </button>
-      <h3 class="font-semibold mb-2">
+
+      <h3 class="heading-medium mb-2">
         Add Event for {{ selectedDay }}/{{ currentMonthIndex + 1 }}/{{ currentYear }}
       </h3>
+
       <div class="mb-4">
         <EventItem v-for="event in selectedDayEvents" :key="event.id" :event="event" />
       </div>
 
-      <h4 class="font-semibold mb-1">Add New Event</h4>
+      <h4 class="heading-medium mb-1">Add New Event</h4>
       <input
         v-model="newEventTitle"
         placeholder="Event title"
-        class="border rounded px-2 py-1 w-full mb-2"
+        class="form-input mb-2"
+        aria-label="New event title"
       />
       <textarea
         v-model="newEventDetails"
         placeholder="Event Details"
-        class="border rounded px-2 py-1 w-full mb-2"
+        class="form-input resize-none mb-2"
+        aria-label="New event details"
       ></textarea>
-      <button @click="saveEvent" class="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+
+      <button
+        @click="saveEvent"
+        class="btn-primary"
+        aria-label="Save new event"
+      >
         Save
       </button>
     </div>
   </section>
 </template>
+

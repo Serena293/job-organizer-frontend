@@ -1,0 +1,190 @@
+
+
+/* Typography */
+.heading-large {
+  @apply text-3xl font-bold tracking-tight;
+}
+
+.heading-medium {
+  @apply text-2xl font-semibold tracking-tight;
+}
+
+.text-muted {
+  @apply text-gray-500 dark:text-gray-400;
+}
+
+/* =======================
+   Buttons
+   ======================= */
+.btn {
+  @apply px-4 py-2 rounded-full font-semibold hover:opacity-90 focus:outline-none focus:ring-2;
+}
+
+.btn-primary {
+  @apply btn bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600;
+}
+
+.btn-secondary {
+  @apply btn bg-gray-300 text-gray-800 hover:bg-gray-400 focus:ring-gray-200 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600;
+}
+
+.btn-edit {
+  @apply btn-primary;
+}
+
+.btn-logout {
+  @apply btn-secondary;
+}
+
+/* Small buttons */
+.btn-small {
+  @apply text-xs px-2 py-1 rounded font-medium;
+}
+
+.btn-small-primary {
+  @apply btn-small bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600;
+}
+
+.btn-small-warning {
+  @apply btn-small bg-yellow-500 text-white hover:bg-yellow-600 focus:ring-yellow-300;
+}
+
+.btn-small-danger {
+  @apply btn-small bg-red-600 text-white hover:bg-red-700 focus:ring-red-300;
+}
+
+.btn-text{
+  @apply text-blue-500 underline
+}
+/* =======================
+   Forms
+   ======================= */
+
+.form-legend {
+  @apply text-lg font-semibold
+}  
+.form-label {
+  @apply block text-sm font-medium text-gray-700 dark:text-gray-300;
+}
+
+.form-input {
+  @apply w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white;
+}
+
+.form-error{
+  @apply text-red-500
+}
+
+.form-fieldset {
+  @apply border-2 border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 p-4;
+}
+
+.form-group {
+  @apply mt-2
+}
+/*  Sections & Cards*/
+.section-card {
+  @apply border border-gray-200 dark:border-gray-700 rounded-lg p-4 mt-6 bg-white;
+}
+
+.section-legend {
+  @apply heading-medium text-gray-800 dark:text-gray-200 mb-3;
+}
+
+.section-content {
+  @apply space-y-4;
+}
+
+.empty-state {
+  @apply text-muted italic;
+}
+
+/*  Profile  */
+.profile-container {
+  @apply bg-blue-50 dark:bg-gray-900 min-h-screen p-4;
+}
+
+.profile-grid {
+  @apply grid grid-cols-1 lg:grid-cols-3 gap-6;
+}
+
+.profile-main-content {
+  @apply lg:col-span-2 space-y-6;
+}
+
+.profile-header {
+  @apply space-y-4;
+}
+
+.profile-actions {
+  @apply flex items-center justify-between;
+}
+
+.profile-action-buttons {
+  @apply flex gap-2;
+}
+
+/* =======================
+   Documents
+   ======================= */
+.document-item {
+  @apply flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-2;
+}
+
+.document-info {
+  @apply flex items-center gap-3;
+}
+
+.document-actions {
+  @apply flex gap-2;
+}
+
+
+.toggle-button {
+  @apply btn-primary mt-4;
+}
+
+/* Back button */
+.btn-back {
+  @apply text-blue-600 dark:text-blue-400 hover:underline focus:ring-2 focus:ring-blue-300 flex items-center gap-2;
+}
+
+/* Layout utilities */
+.bg-primary {
+  @apply bg-blue-50 dark:bg-gray-900;
+}
+
+.min-screen-height {
+  @apply min-h-screen;
+}
+
+.center-content {
+  @apply flex items-center justify-center;
+}
+
+.container {
+  @apply max-w-6xl mx-auto px-6;
+}
+
+
+
+/* Calendar */
+.calendar-container {
+  @apply p-6 max-w-md mx-auto;
+}
+
+.calendar-grid {
+  @apply grid grid-cols-7 gap-2 text-center font-semibold;
+}
+
+.calendar-day {
+  @apply p-2 border rounded text-center relative cursor-pointer transition-colors;
+}
+
+.calendar-day-empty {
+  @apply bg-transparent border-none;
+}
+
+.event-indicator {
+  @apply absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 rounded-full bg-blue-500;
+}

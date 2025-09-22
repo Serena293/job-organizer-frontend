@@ -107,134 +107,167 @@ const handleSaveProfile = async (updatedData) => {
 </script>
 
 <template>
-  <section class="bg-blue-50 min-h-screen flex items-center justify-center p-10">
-    <div class="grid grid-cols-3 gap-6 w-full max-w-6xl">
-      <div class="col-span-2 flex flex-col gap-6">
-        <div class="flex justify-between flex-col">
-          <div class="flex justify-between">
-            <BackButton />
-            <div class="flex gap-3">
+  <section class="profile-container bg-primary">
+    <div class="profile-grid">
+      <!-- Main content -->
+      <div class="profile-main-content">
+        <header class="profile-header">
+          <div class="profile-actions">
+            <BackButton aria-label="Go back" />
+            <div class="profile-action-buttons">
               <button
                 @click="showEditProfile = !showEditProfile"
-                class="sm:py-0 sm:h-10 sm:self-center text-blue-700 font-semibold border border-blue-700 px-2 py-1 rounded-full hover:bg-blue-100"
+                class="btn-edit"
+                :aria-label="showEditProfile ? 'Close edit profile' : 'Edit profile'"
               >
                 {{ showEditProfile ? 'Close Edit' : 'Edit Profile' }}
               </button>
               <button
                 @click="handleLogout"
-                class="sm:py-0 sm:h-10 sm:self-center text-red-600 font-semibold border border-red-600 px-4 py-1 rounded-full hover:bg-red-100"
+                class="btn-logout"
+                aria-label="Log out"
               >
                 Log out
               </button>
             </div>
           </div>
+
           <div>
-            <h1 class="font-bold text-2xl">
+            <h1 class="heading-large text-gray-900 dark:text-white">
               {{ authStore.user?.firstName }} {{ authStore.user?.lastName }}
             </h1>
-            <h2 class="text-gray-600 text-lg">{{ authStore.user?.username }}</h2>
-            <p class="text-gray-500">{{ authStore.user?.email }}</p>
+            <h2 class="text-muted text-lg">
+              {{ authStore.user?.username }}
+            </h2>
+            <p class="text-muted">
+              {{ authStore.user?.email }}
+            </p>
           </div>
+
           <EditProfile
             v-if="showEditProfile"
             :user="authStore.user"
             @save="handleSaveProfile"
             @cancel="showEditProfile = false"
           />
-        </div>
+        </header>
 
         <!-- Documents Section -->
-        <fieldset class="bg-white shadow rounded-2xl p-6">
-          <legend class="font-semibold text-gray-700 flex justify-between items-center">
-            Documents
-          </legend>
+        <fieldset class="section-card">
+          <legend class="section-legend">Documents</legend>
 
-          <div class="mt-4 space-y-3">
+          <div class="section-content">
             <div
               v-for="doc in profileStore.documents"
               :key="doc.id"
-              class="flex justify-between items-center border p-3 rounded-lg hover:bg-gray-50"
+              class="document-item"
             >
-              <div class="flex items-center gap-3">
-                <i :class="getDocumentIcon(doc.documentPath)" class="text-blue-600 text-xl"></i>
+              <div class="document-info">
+                <i
+                  :class="getDocumentIcon(doc.documentPath)"
+                  class="text-blue-600 dark:text-blue-400 text-xl"
+                  aria-hidden="true"
+                ></i>
                 <div>
-                  <p class="font-medium text-gray-800">{{ doc.documentName }}</p>
-                  <p class="text-sm text-gray-500">{{ doc.documentDescription }}</p>
+                  <p class="font-medium text-gray-800 dark:text-gray-200">
+                    {{ doc.documentName }}
+                  </p>
+                  <p class="text-sm text-muted">
+                    {{ doc.documentDescription }}
+                  </p>
                 </div>
               </div>
-              
-              <div class="flex gap-2">
+
+              <div class="document-actions">
                 <button
                   @click="startEdit(doc)"
-                  class="text-xs px-2 py-1 rounded bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
+                  class="btn-small-warning"
+                  aria-label="Edit document"
                 >
                   Edit
                 </button>
                 <button
                   @click="deleteDoc(doc.id)"
-                  class="text-xs px-2 py-1 rounded bg-red-100 text-red-600 hover:bg-red-200"
+                  class="btn-small-danger"
+                  aria-label="Delete document"
                 >
                   Delete
                 </button>
               </div>
             </div>
 
-            <p v-if="profileStore.documents.length === 0" class="text-sm text-gray-500">
+            <p
+              v-if="profileStore.documents.length === 0"
+              class="empty-state"
+            >
               No documents uploaded yet.
             </p>
           </div>
 
-          <button @click="toggleForm" class="text-sm text-gray-500 hover:text-gray-700 flex mt-4">
+          <button
+            @click="toggleForm"
+            class="toggle-button"
+            :aria-label="editMode ? 'Cancel edit' : 'Upload document'"
+          >
             {{ editMode ? 'Cancel edit' : 'Upload document' }}
-            <i class="pi pi-plus text-sm pl-2" v-if="!editMode"></i>
+            <i
+              class="pi pi-plus text-sm pl-2"
+              v-if="!editMode"
+              aria-hidden="true"
+            ></i>
           </button>
 
           <div v-if="showUploadForm" class="mt-4">
             <DocumentForm v-if="!editMode" mode="create" />
-            <form v-else @submit.prevent="saveEdit" class="space-y-3">
+            <form
+              v-else
+              @submit.prevent="saveEdit"
+              class="space-y-3"
+              aria-label="Edit document form"
+            >
               <div>
-                <label for="name" class="block text-sm font-medium">Document Name</label>
+                <label for="name" class="form-label">Document Name</label>
                 <input
                   v-model="editingDoc.documentName"
                   id="name"
-                  class="border rounded px-2 py-1 w-full"
+                  class="form-input"
+                  aria-required="true"
                 />
               </div>
               <div>
-                <label for="desc" class="block text-sm font-medium">Description</label>
+                <label for="desc" class="form-label">Description</label>
                 <textarea
                   v-model="editingDoc.documentDescription"
                   id="desc"
-                  class="border rounded px-2 py-1 w-full"
+                  class="form-input resize-none"
+                  aria-required="false"
                 ></textarea>
               </div>
-              <!-- <div>
-                <label for="path" class="block text-sm font-medium">Path</label>
-                <input
-                  v-model="editingDoc.documentPath"
-                  id="path"
-                  class="border rounded px-2 py-1 w-full"
-                />
-              </div>   -->
-               
-                <div>
-                <label for="file" class="block text-sm font-medium">Change File</label>
+              <div>
+                <label for="file" class="form-label">Change File</label>
                 <input
                   type="file"
                   @change="handleFileChange"
                   id="file"
-                  class="border rounded px-2 py-1 w-full"
+                  class="form-input"
                 />
-                <p v-if="editingDoc.file" class="text-sm text-gray-600 mt-1">
+                <p
+                  v-if="editingDoc.file"
+                  class="text-sm text-muted mt-1"
+                >
                   New file: {{ editingDoc.file.name }}
                 </p>
-                <p v-else class="text-sm text-gray-500 mt-1">
+                <p
+                  v-else
+                  class="text-sm text-muted mt-1"
+                >
                   Current file: {{ editingDoc.documentPath }}
                 </p>
               </div>
               <button
                 type="submit"
-                class="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                class="btn-small-primary"
+                aria-label="Save document changes"
               >
                 Save Changes
               </button>
@@ -242,8 +275,11 @@ const handleSaveProfile = async (updatedData) => {
           </div>
         </fieldset>
       </div>
-      <!-- notes -->
+
+      <!-- Notes Section -->
       <NoteSection />
     </div>
   </section>
 </template>
+
+

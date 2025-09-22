@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useAuthStore } from './authStore'
 
 export const useEventStore = defineStore('eventStore', () => {
@@ -7,24 +7,31 @@ export const useEventStore = defineStore('eventStore', () => {
   const selectedEvent = ref(null)
   const isLoading = ref(false)
   const authStore = useAuthStore()
-  const token = authStore.token
+
+  const token = computed(() => authStore.token)
+  const isAuthenticated = computed(() => authStore.isLoggedIn && !!token.value)
+  
+  const API_BASE_URL = 'http://localhost:8080'
 
   const fetchEvents = async () => {
-    if (!authStore.isLoggedIn || !authStore.token) {
-      return []
-    }
+        if (!isAuthenticated.value)  return
+      
     isLoading.value = true
     try {
-      const response = await fetch('http://localhost:8080/events', {
+      const response = await fetch(`${API_BASE_URL}/events`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token.value}`,
           'Content-Type': 'application/json',
         },
       })
 
       if (!response.ok) throw new Error('Fetch failed')
       events.value = await response.json()
-    } finally {
+    } catch(error){
+      console.error('Error fetching events: ', error)
+      throw error
+    }  
+    finally {
       isLoading.value = false
     }
   }
@@ -35,9 +42,9 @@ export const useEventStore = defineStore('eventStore', () => {
     }
     isLoading.value = true
     try {
-      const response = await fetch(`http://localhost:8080/events/by-date?date=${date}`, {
+      const response = await fetch(`${API_BASE_URL}/events/by-date?date=${date}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token.value}`,
           'Content-Type': 'application/json',
         },
       })
@@ -54,11 +61,11 @@ export const useEventStore = defineStore('eventStore', () => {
       return []
     }
 
-    const response = await fetch('http://localhost:8080/events', {
+    const response = await fetch(`${API_BASE_URL}/events`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.value}`,
       },
       body: JSON.stringify(eventData),
     })
@@ -70,15 +77,15 @@ export const useEventStore = defineStore('eventStore', () => {
   }
 
   const updateEvent = async (id, updatedData) => {
-    if (!authStore.isLoggedIn || !authStore.token) {
-      return []
+     if (!isAuthenticated.value) {
+      throw new Error('User not logged in')
     }
 
-    const response = await fetch(`http://localhost:8080/events/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/events/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.value}`,
       },
       body: JSON.stringify(updatedData),
     })
@@ -98,14 +105,14 @@ export const useEventStore = defineStore('eventStore', () => {
   }
 
   const deleteEvent = async (id) => {
-    if (!authStore.isLoggedIn || !authStore.token) {
-      return []
+      if (!isAuthenticated.value) {
+      throw new Error('User not logged in')
     }
 
-    const response = await fetch(`http://localhost:8080/events/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/events/${id}`, {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.value}`,
       },
     })
 

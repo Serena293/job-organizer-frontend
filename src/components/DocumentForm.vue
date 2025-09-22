@@ -40,11 +40,12 @@ const saveDocument = async () => {
     selectedFile.value = null
     const fileInput = document.getElementById('file')
     if (fileInput) fileInput.value = ''
-
+    profileStore.fetchDocuments()
     toast.add({
       severity: 'success',
       summary: 'Upload successful',
       detail: fileName,
+      life: 3000
     })
   } catch (error) {
     console.error(error)
@@ -52,44 +53,46 @@ const saveDocument = async () => {
       severity: 'error',
       summary: 'Upload failed',
       detail: error.message || 'Check console.',
+      life: 3000
     })
   }
 }
 </script>
 
 <template>
-  <form @submit.prevent="saveDocument">
-    <fieldset class="space-y-3">
-      <div class="flex flex-col">
-        <label for="document-name">Document Name</label>
+  <form @submit.prevent="saveDocument" aria-label="Upload document form">
+    <fieldset class="space-y-3 form-fieldset">
+      <div class="form-group">
+        <label for="document-name" class="form-label">Document Name</label>
         <input
           v-model="form.documentName"
           id="document-name"
           name="document-name"
           placeholder="Eg. Curriculum Vitae"
-          class="border rounded px-2 py-1 text-sm w-80"
+          class="form-input"
+          aria-required="true"
         />
       </div>
 
-      <div class="flex flex-col">
-        <label for="document-description">Document Description</label>
+      <div class="form-group">
+        <label for="document-description" class="form-label">Document Description</label>
         <textarea
           v-model="form.documentDescription"
           id="document-description"
           name="document-description"
           placeholder="Eg. CV for FrontEnd roles"
-          class="border rounded px-2 py-1 text-sm w-80"
+          class="form-input"
         ></textarea>
       </div>
 
-      <div class="flex flex-col">
-        <label for="file">Select File</label>
+      <div class="form-group">
+        <label for="file" class="form-label">Select File</label>
         <input
           type="file"
           @change="handleFileChange"
           id="file"
           name="file"
-          class="border rounded px-2 py-1 text-sm w-80"
+          class="form-input"
         />
 
         <p v-if="selectedFile" class="text-sm text-gray-600 mt-1">
@@ -98,7 +101,8 @@ const saveDocument = async () => {
       </div>
 
       <button
-        class="border rounded px-3 py-1 mt-2 bg-blue-500 text-white hover:bg-blue-600 transition"
+        class="btn-primary"
+        aria-label="Upload document"
         type="submit"
       >
         Upload

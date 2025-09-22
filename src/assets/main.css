@@ -1,17 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import 'primevue/resources/themes/saga-blue/theme.css';
 @import 'primevue/resources/primevue.min.css';
 @import 'primeicons/primeicons.css';
-
-@import "tailwindcss";
-
 
 
 html, body{
     margin: 0;
     padding: 0;
     min-height: 100vh;
-}
-
-.custom-file-btn{
-    
 }

@@ -34,75 +34,95 @@ const cancelEdit = () => {
 </script>
 
 <template>
-  <div class="border border-gray-300 rounded-lg p-4 mt-4 bg-white shadow">
-    <h3 class="font-semibold text-lg mb-3">Edit Profile</h3>
+  <!-- <section class="section-card"> -->
+    
+   
 
-    <div class="space-y-3">
-
-      <div>
-        <label class="block text-sm font-medium text-gray-600">First Name</label>
+    <fieldset class=" form-fieldset space-y-3">
+ <legend class="section-legend">Edit Profile</legend>
+      <!-- First Name (disabled) -->
+      <div class="form-group">
+        <label class="form-label">First Name</label>
         <input
           v-model="form.firstName"
           disabled
-          class="border rounded px-2 py-1 w-full bg-gray-100 text-gray-500"
+          class="form-input bg-gray-100 text-gray-500"
+          aria-label="First Name"
         />
       </div>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-600">Last Name</label>
+      <!-- Last Name (disabled) -->
+      <div class="form-group">
+        <label class="form-label">Last Name</label>
         <input
           v-model="form.lastName"
           disabled
-          class="border rounded px-2 py-1 w-full bg-gray-100 text-gray-500"
+          class="form-input bg-gray-100 text-gray-500"
+          aria-label="Last Name"
         />
       </div>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-600">Username</label>
-        <input v-model="form.username" class="border rounded px-2 py-1 w-full" />
+      <!-- Username -->
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input
+          v-model="form.username"
+          class="form-input"
+          aria-label="Username"
+        />
       </div>
 
-   
-      <div>
-        <label class="block text-sm font-medium text-gray-600">Email</label>
-        <input type="email" v-model="form.email" class="border rounded px-2 py-1 w-full" />
+      <!-- Email -->
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input
+          type="email"
+          v-model="form.email"
+          class="form-input"
+          aria-label="Email"
+        />
       </div>
 
       <!-- Password -->
-      <div>
-        <label class="block text-sm font-medium text-gray-600">Password</label>
+      <div class="form-group">
+        <label class="form-label">Password</label>
         <div class="relative">
           <input
             :type="showPassword ? 'text' : 'password'"
             v-model="form.password"
             placeholder="Enter new password"
-            class="border rounded px-2 py-1 w-full pr-10"
+            class="form-input pr-10"
+            aria-label="Password"
           />
           <button
             type="button"
             @click="showPassword = !showPassword"
             class="absolute inset-y-0 right-0 px-2 text-gray-500"
+            aria-label="Toggle password visibility"
           >
             <i :class="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
           </button>
         </div>
       </div>
-    </div>
+   
 
     <!-- Actions -->
     <div class="flex justify-end gap-2 mt-4">
       <button
         @click="cancelEdit"
-        class="px-4 py-1 rounded border border-gray-400 text-gray-600 hover:bg-gray-100"
+        class="btn-secondary"
+        aria-label="Cancel editing profile"
       >
         Cancel
       </button>
       <button
         @click="saveChanges"
-        class="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+        class="btn-primary"
+        aria-label="Save profile changes"
       >
         Save
       </button>
-    </div>
-  </div>
+    </div> 
+  </fieldset>
+  <!-- </section> -->
 </template>

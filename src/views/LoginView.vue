@@ -37,8 +37,6 @@ const validateForm = () => {
     errors.password = 'Password to short'
   }
 
-  console.log(errors.email === '' || errors.password === '')
-
   return errors.email === '' && errors.password === ''
 }
 
@@ -77,64 +75,60 @@ const login = async (event) => {
 </script>
 
 <template>
-  <div class="bg-blue-50">
-    <BackButton />
-  </div>
+  <main class="min-screen-height bg-primary center-content">
+    <form @submit="login" class="form-container" aria-label="Login form">
+      <fieldset class="form-fieldset">
+        <legend class="form-legend">Login</legend>
 
-  <section class="flex flex-col items-center justify-center min-h-screen bg-blue-50">
-    <form @submit="login">
-      <fieldset class="flex flex-col border-2 py-10 px-20 rounded bg-white">
-        <h2 class="text-center text-2xl font-semibold pb-5">Login</h2>
-
-        <div class="flex flex-col pb-5">
-          <label for="email" class="font-semibold">Email</label>
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
           <input
             id="email"
             type="email"
             placeholder="example@email.com"
             v-model="email"
-            class="border-2 px-2 mt-2 rounded"
+            class="form-input"
             :class="emailClass"
+            aria-required="true"
           />
-          <!-- {{ console.log(errors.email) }} -->
-          <!-- {{ console.log(serverError.value, '...') }} -->
-          <p v-if="errors.email" class="text-red-500 text-sm mt-1">{{ errors.email }}</p>
+          <p v-if="errors.email" class="form-error">{{ errors.email }}</p>
         </div>
 
-        <div class="flex flex-col pb-5">
-          <label for="password" class="font-semibold">Password</label>
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
           <input
             id="password"
             type="password"
             placeholder="Insert your password"
             v-model="password"
-            class="border-2 px-2 mt-2 rounded"
+            class="form-input"
             :class="passClass"
+            aria-required="true"
           />
-          <p v-if="errors.password" class="text-red-500 text-sm mt-1">{{ errors.password }}</p>
-          <p v-if="serverError" class="text-red-500 text-sm mt-1">{{ serverError }}</p>
+          <p v-if="errors.password" class="form-error">{{ errors.password }}</p>
+          <p v-if="serverError" class="form-error">{{ serverError }}</p>
         </div>
 
-        <button
-          type="submit"
-          class="border-1 rounded-full font-semibold bg-blue-900 hover:bg-blue-500 text-gray-300 py-1"
-        >
+        <!-- Submit -->
+        <button type="submit" class="btn-primary mt-4" aria-label="Log in">
           Login
         </button>
 
-        <p class="pt-1">
-          Don't have an account?
-          <span class="text-blue-500 underline">
-            <RouterLink to="/register">Sign up</RouterLink>
-          </span>
-        </p>
-        <p class="pt-1">
-          Forgot your password?
-          <span class="text-blue-500 underline">
-            <RouterLink to="/forgot-password">Click here</RouterLink>
-          </span>
-        </p>
+        <!-- Links -->
+        <div class="pt-4 text-center text-nav">
+          <p class="pt-2">
+            Don't have an account?
+            <RouterLink to="/register" class="btn-text">Sign up</RouterLink>
+          </p>
+          <p class="pt-1">
+            Forgot your password?
+            <RouterLink to="/forgot-password" class="btn-text">Click here</RouterLink>
+          </p>
+        </div>
       </fieldset>
     </form>
-  </section>
+  </main>
 </template>
+

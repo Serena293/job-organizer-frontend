@@ -3,9 +3,8 @@ import router from '@/router'
 import { reactive } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { useAuthStore } from '@/stores/authStore'
-import { useInputClasses } from '@/utilities/useInputClasses'
-
-const {normal, error, valid} = useInputClasses()
+// import { useInputClasses } from '@/utilities/useInputClasses'
+import BackButton from '@/components/BackButton.vue'
 
 const form = reactive({
   type: 'FULL_TIME',
@@ -60,9 +59,6 @@ const handleSubmit = async () => {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
-
-    const data = await response.json()
-    // console.log('Job saved:', data)
     toast.add({
       severity: 'success',
       summary: 'Success',
@@ -85,33 +81,35 @@ const handleSubmit = async () => {
         detail: 'Error: ' + error,
         life: 3000,
       },
-      console.log('toast error'),
+
     )
   }
 }
 </script>
 
 <template>
-  <section class="bg-blue-50">
-    <div class="container m-auto max-w-2xl py-24">
-      <div class="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
-        <form @submit.prevent="handleSubmit">
-          <h2 class="text-3xl text-center font-semibold mb-6">Add Job</h2>
+  <section class="bg-primary">
+    <BackButton/>
+    <div class="container-responsive py-24">
+      <div class="section-card border border-gray-200 dark:border-gray-700">
+        <form @submit.prevent="handleSubmit" role="form" aria-label="Add job application form" class="form-container max-w-2xl mx-auto">
+          <legend class="heading-large text-center mb-6">Add Job</legend>
 
-          <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2">Job Title</label>
+          <div class="form-group">
+            <label class="form-label font-bold">Job Title</label>
             <input
               type="text"
               v-model="form.title"
-              class="border rounded w-full py-2 px-3"
+              class="form-input"
               placeholder="e.g. Frontend Developer"
               required
+              aria-label="Job title"
             />
           </div>
 
-          <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2">Status</label>
-            <select v-model="form.status" class="border rounded w-full py-2 px-3" required>
+          <div class="form-group">
+            <label class="form-label font-bold">Status</label>
+            <select v-model="form.status" class="form-input" required aria-label="Application status">
               <option value="APPLIED">Applied</option>
               <option value="INTERVIEW">Interview</option>
               <option value="OFFER">Offer</option>
@@ -124,103 +122,112 @@ const handleSubmit = async () => {
             </select>
           </div>
 
-          <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2">Job Type</label>
-            <select v-model="form.type" class="border rounded w-full py-2 px-3" required>
+          <div class="form-group">
+            <label class="form-label font-bold">Job Type</label>
+            <select v-model="form.type" class="form-input" required aria-label="Job type">
               <option value="FULL_TIME">Full-Time</option>
               <option value="PART_TIME">Part-Time</option>
             </select>
           </div>
 
-          <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2">Description</label>
+          <div class="form-group">
+            <label class="form-label font-bold">Description</label>
             <textarea
               v-model="form.description"
-              class="border rounded w-full py-2 px-3"
+              class="form-input resize-none"
               rows="4"
               placeholder="Add job duties, expectations, requirements, or copy and paste job description"
+              aria-label="Job description"
             ></textarea>
           </div>
 
-          <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2">URL</label>
+          <div class="form-group">
+            <label class="form-label font-bold">URL</label>
             <input
               type="text"
               v-model="form.url"
-              class="border rounded w-full py-2 px-3"
+              class="form-input"
               placeholder="www.example.com"
               required
+              aria-label="Job application URL"
             />
           </div>
 
-          <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2">Salary</label>
+          <div class="form-group">
+            <label class="form-label font-bold">Salary</label>
             <input
               type="text"
               v-model="form.salary"
-              class="border rounded w-full py-2 px-3"
+              class="form-input"
               placeholder="e.g. $50K - $70K"
               required
+              aria-label="Salary range"
             />
           </div>
 
-          <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2">Location</label>
+          <div class="form-group">
+            <label class="form-label font-bold">Location</label>
             <input
               type="text"
               v-model="form.location"
-              class="border rounded w-full py-2 px-3"
+              class="form-input"
               placeholder="Company Location"
               required
+              aria-label="Job location"
             />
           </div>
 
-          <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2">Starting Date</label>
+          <div class="form-group">
+            <label class="form-label font-bold">Starting Date</label>
             <input
               type="date"
               v-model="form.startingDate"
-              class="border rounded w-full py-2 px-3"
+              class="form-input"
+              aria-label="Expected starting date"
             />
           </div>
 
-          <div class="grid grid-cols-2 gap-4 mb-6">
-            <div>
-              <label class="block text-gray-700 font-bold mb-2">Pros</label>
+          <div class="grid-two-columns gap-4 mb-6">
+            <div class="form-group">
+              <label class="form-label font-bold">Pros</label>
               <textarea
                 v-model="form.pros"
-                class="border rounded w-full py-2 px-3"
+                class="form-input resize-none"
                 rows="3"
                 placeholder="List the benefits of this job"
+                aria-label="Job advantages"
               ></textarea>
             </div>
-            <div>
-              <label class="block text-gray-700 font-bold mb-2">Cons</label>
+            <div class="form-group">
+              <label class="form-label font-bold">Cons</label>
               <textarea
                 v-model="form.cons"
-                class="border rounded w-full py-2 px-3"
+                class="form-input resize-none"
                 rows="3"
                 placeholder="List the downsides of this job"
+                aria-label="Job disadvantages"
               ></textarea>
             </div>
           </div>
 
-          <h3 class="text-2xl mb-5">Company Info</h3>
-          <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2">Company Name</label>
+          <h3 class="heading-medium mb-5">Company Info</h3>
+          <div class="form-group">
+            <label class="form-label font-bold">Company Name</label>
             <input
               type="text"
               v-model="form.company"
-              class="border rounded w-full py-2 px-3"
+              class="form-input"
               placeholder="Company Name"
               required
+              aria-label="Company name"
             />
           </div>
 
           <div>
             <button
-              class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
+              class="btn-primary w-full py-3 rounded-full font-bold"
               type="submit"
+              aria-label="Save job application"
             >
               Save Job
             </button>

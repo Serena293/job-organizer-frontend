@@ -1,4 +1,5 @@
 <script setup>
+import BackButton from '@/components/BackButton.vue'
 import { ref } from 'vue'
 
 const email = ref('')
@@ -32,25 +33,41 @@ const sendEmail = async () => {
 </script>
 
 <template>
-  <section class="flex flex-col items-center justify-center min-h-screen bg-blue-50 px-4">
-    <form @submit.prevent="sendEmail" class="bg-white rounded-lg shadow-md p-8 w-full max-w-md"> 
-      <h2 class="text-2xl font-semibold text-center mb-6">Forgot Password</h2>
+ <div class="bg-primary">
+      <BackButton />
+    </div>
+  <main class="min-screen-height bg-primary center-content px-4">
+   
+    
+    <form @submit.prevent="sendEmail" class="form-container"> 
+      <fieldset class="form-fieldset">
+        <legend class="form-legend">Forgot Password</legend>
 
-      <div class="flex flex-col mb-4">
-        <label for="find-email" class="mb-2 font-medium">
-          Type the email associated with your account:
-        </label>
-        <input type="email" id="find-email" v-model="email"
-               placeholder="email@example.com"
-               class="border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"/>
-      </div>
+        <div class="form-group">
+          <label for="find-email" class="form-label">
+            Type the email associated with your account:
+          </label>
+          <input 
+            type="email" 
+            id="find-email" 
+            v-model="email"
+            placeholder="email@example.com"
+            class="form-input"
+            aria-describedby="message error"
+          />
+        </div>
 
-      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-        Send Email
-      </button>
+        <button type="submit" class="btn-primary">
+          Send Email
+        </button>
 
-      <p v-if="message" class="mt-4 text-green-600">{{ message }}</p>
-      <p v-if="error" class="mt-4 text-red-600">{{ error }}</p>
+        <p v-if="message" id="message" class="mt-4 text-green-600 dark:text-green-400 form-error">
+          {{ message }}
+        </p>
+        <p v-if="error" id="error" class="form-error">
+          {{ error }}
+        </p>
+      </fieldset>
     </form>
-  </section>
+  </main>
 </template>

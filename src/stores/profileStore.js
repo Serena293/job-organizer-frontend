@@ -4,43 +4,43 @@ import { useAuthStore } from './authStore'
 
 export const useProfileStore = defineStore('profileStore', () => {
   const authStore = useAuthStore()
-  
+
   const documents = ref([])
   const notes = ref([])
   const isLoading = ref(false)
   const error = ref(null)
 
- const fetchWithAuth = async (url, options = {}) => {
-  const token = authStore.token
-  if (!token) {
-    throw new Error('Missing Token')
-  }
-
-  const headers = {
-    'Authorization': `Bearer ${token}`
-  }
-
-  if (!(options.body instanceof FormData) && !options.headers?.['Content-Type']) {
-    headers['Content-Type'] = 'application/json'
-  }
-
-  const defaultOptions = {
-    headers: {
-      ...headers,
-      ...options.headers
+  const fetchWithAuth = async (url, options = {}) => {
+    const token = authStore.token
+    if (!token) {
+      throw new Error('Missing Token')
     }
-  }
 
-  const response = await fetch(url, { ...defaultOptions, ...options })
-  
-  if (!response.ok) {
-    const errorText = await response.text()
-    throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    }
+
+    if (!(options.body instanceof FormData) && !options.headers?.['Content-Type']) {
+      headers['Content-Type'] = 'application/json'
+    }
+
+    const defaultOptions = {
+      headers: {
+        ...headers,
+        ...options.headers,
+      },
+    }
+
+    const response = await fetch(url, { ...defaultOptions, ...options })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
+    }
+
+    return response
   }
-  
-  return response
-}
-  //NOTES 
+  //NOTES
   const fetchNotes = async () => {
     isLoading.value = true
     error.value = null
@@ -62,13 +62,13 @@ export const useProfileStore = defineStore('profileStore', () => {
     try {
       const response = await fetchWithAuth('http://localhost:8080/notes', {
         method: 'POST',
-        body: JSON.stringify(newNote)
+        body: JSON.stringify(newNote),
       })
 
       const savedNote = await response.json()
-       console.log("nota salvata", savedNote)
+
       notes.value.push(savedNote)
-      console.log("notes.value",notes.value)
+
       return savedNote
     } catch (err) {
       error.value = err.message
@@ -85,11 +85,11 @@ export const useProfileStore = defineStore('profileStore', () => {
     try {
       const response = await fetchWithAuth(`http://localhost:8080/notes/${id}`, {
         method: 'PUT',
-        body: JSON.stringify(updatedNote)
+        body: JSON.stringify(updatedNote),
       })
 
       const savedNote = await response.json()
-     
+
       const index = notes.value.findIndex((note) => note.id === id)
       if (index !== -1) {
         notes.value[index] = savedNote
@@ -109,7 +109,7 @@ export const useProfileStore = defineStore('profileStore', () => {
     error.value = null
     try {
       await fetchWithAuth(`http://localhost:8080/notes/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       })
       notes.value = notes.value.filter((note) => note.id !== id)
     } catch (err) {
@@ -121,7 +121,7 @@ export const useProfileStore = defineStore('profileStore', () => {
     }
   }
 
-  // DOCUMENTS 
+  // DOCUMENTS
   const fetchDocuments = async () => {
     isLoading.value = true
     error.value = null
@@ -142,20 +142,13 @@ export const useProfileStore = defineStore('profileStore', () => {
     error.value = null
     try {
       const token = authStore.token
-      if(!token) throw new Error ('Missing Token')
+      if (!token) throw new Error('Missing Token')
 
       const response = await fetchWithAuth('http://localhost:8080/documents/upload', {
         method: 'POST',
 
-        body: formData
+        body: formData,
       })
-
-    //    if (!response.ok) {
-    //   const errorText = await response.text()
-    //   throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
-    // }
-
-
       const savedDoc = await response.json()
       documents.value.push(savedDoc)
       return savedDoc
@@ -174,7 +167,7 @@ export const useProfileStore = defineStore('profileStore', () => {
     try {
       const response = await fetchWithAuth(`http://localhost:8080/documents/${id}`, {
         method: 'PUT',
-        body: JSON.stringify(updatedDocument)
+        body: JSON.stringify(updatedDocument),
       })
 
       const savedDoc = await response.json()
@@ -197,7 +190,7 @@ export const useProfileStore = defineStore('profileStore', () => {
     error.value = null
     try {
       await fetchWithAuth(`http://localhost:8080/documents/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       })
       documents.value = documents.value.filter((doc) => doc.id !== id)
     } catch (err) {
@@ -219,17 +212,17 @@ export const useProfileStore = defineStore('profileStore', () => {
     notes,
     isLoading,
     error,
-    
+
     fetchNotes,
     addNote,
     updateNote,
     deleteNote,
-      
+
     fetchDocuments,
     addDocument,
     updateDocument,
     deleteDocument,
-    
-    clearError
+
+    clearError,
   }
 })

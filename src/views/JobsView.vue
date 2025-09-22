@@ -9,9 +9,6 @@ import { onMounted } from 'vue'
 
 const authStore = useAuthStore()
 const jobStore = useJobStore()
-// console.log(jobStore.jobs.value)
-console.log(jobStore.jobs.length)
-console.log(authStore.isLoggedIn)
 
 onMounted(() => {
   jobStore.fetchJobs()

@@ -23,27 +23,27 @@ const cancelNoteEdit = () => {
 </script>
 
 <template>
-  <fieldset class="bg-white shadow rounded-2xl p-6">
-    <legend class="font-semibold text-gray-700 flex justify-between items-center w-full mb-4">
-      <span>Notes</span>
-      <button
-        @click="toggleNoteForm"
-        class="flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-medium hover:bg-blue-200 transition"
-        :disabled="noteBeingEdited"
-      >
-        <i class="pi" :class="showNoteForm && !noteBeingEdited ? 'pi-times' : 'pi-plus'"></i>
-        {{ showNoteForm && !noteBeingEdited ? 'Cancel' : 'Add note' }}
-      </button>
-    </legend>
+  <fieldset class="form-fieldset" role="region" aria-label="Notes Section">
+<legend class="form-legend flex justify-between items-center w-full mb-4">
+  <span class="text-black-static">Notes</span>
+  <button
+    @click="toggleNoteForm"
+class="btn-small-primary  flex items-center gap-2"
+    :disabled="noteBeingEdited"
+    :aria-label="showNoteForm && !noteBeingEdited ? 'Cancel adding note' : 'Add new note'"
+  >
+    <i class="pi" :class="showNoteForm && !noteBeingEdited ? 'pi-times' : 'pi-plus'"></i>
+    {{ showNoteForm && !noteBeingEdited ? 'Cancel' : 'Add note' }}
+  </button>
+</legend>
+
+
     <div class="mt-4">
       <NoteForm
         v-if="showNoteForm || noteBeingEdited"
         :editNote="noteBeingEdited"
         @cancelEdit="cancelNoteEdit"
-        @saved="
-          showNoteForm = false,
-          noteBeingEdited = null
-        "
+        @saved="showNoteForm = false, noteBeingEdited = null"
         class="mb-4"
       />
       <NotesComponent
@@ -53,3 +53,4 @@ const cancelNoteEdit = () => {
     </div>
   </fieldset>
 </template>
+

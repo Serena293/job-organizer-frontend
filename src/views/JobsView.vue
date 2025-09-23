@@ -2,8 +2,6 @@
 import JobListings from '@/components/JobListings.vue'
 import { useAuthStore } from '@/stores/authStore'
 import { useJobStore } from '@/stores/jobStore'
-// import { useRouter } from 'vue-router';
-// import AddJob from './AddJob.vue';
 import BackButton from '@/components/BackButton.vue'
 import { onMounted } from 'vue'
 
@@ -13,30 +11,26 @@ const jobStore = useJobStore()
 onMounted(() => {
   jobStore.fetchJobs()
 })
-
 </script>
 
 <template>
-  <section class="bg-blue-50 min-h-screen">
-  <BackButton />
-  <div
-    v-if="authStore.isLoggedIn && jobStore.jobs.length > 0"
-    class="flex justify-center align-center py-10"
-  >
-    <JobListings />
-  </div>
-  <div v-else class="flex justify-center align-center py-10">
-    <div>
-      <h2 class="text-2xl font-bold text-blue-800">No Jobs Present</h2>
+  <main class="min-screen-height bg-primary">
+    <BackButton class="mb-6" />
+    <div class="container-responsive">
+      <div v-if="authStore.isLoggedIn && jobStore.jobs.length > 0" class="center-content">
+        <JobListings />
+      </div>
 
-      <p class="pt-5 text-center">
-       Add a new job
-        <span class="underline text-blue-500"><RouterLink to="/jobs/add">here</RouterLink></span>
-      .</p>
+      <div v-else class="center-content min-screen-height">
+        <div class="section-card text-center max-w-md mx-auto">
+          <h2 class="heading-medium text-black-static mb-4">No Jobs Present</h2>
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
+            Add a new job
+            <RouterLink to="/jobs/add" class="btn-text" aria-label="Add a new job">here</RouterLink
+            >.
+          </p>
+        </div>
+      </div>
     </div>
-  </div>
-  
-  </section>
-
-
+  </main>
 </template>

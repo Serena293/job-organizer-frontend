@@ -20,16 +20,19 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="text-center bg-gray-900 mx-5 text-white p-5">
-    <h1 v-if="authStore.isLoggedIn && authStore.user" class="text-3xl">Hello {{ authStore.user.firstName }}</h1>
-    <!-- <h1 v-else class="text-3xl">{{ title }}</h1> -->
-
+  <section class="hero-section" role="region" aria-label="Welcome section">
+    <h1 
+      v-if="authStore.isLoggedIn && authStore.user" 
+      class="hero-title">
+      Hello {{ authStore.user.firstName }}
+    </h1>
+ 
     <blockquote class="my-5">
-      
-      <p class="text-xl italic">"{{ quote }}"</p>
-      <footer class="mt-2 text-sm text-gray-300">
+      <p class="quote-text">"{{ quote }}"</p>
+      <footer class="quote-footer">
         — <cite>{{ authorName }}</cite>
       </footer>
     </blockquote>
   </section>
 </template>
+

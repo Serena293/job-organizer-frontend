@@ -14,25 +14,29 @@ const handleEdit = () => emits('edit', props.note)
 const handleDelete = () => emits('delete', props.note)
 </script>
 
+
 <template>
-  <div class="bg-blue-50 border border-blue-200 rounded-lg shadow p-4 flex flex-col justify-between">
+  <div class="section-card flex flex-col justify-between" role="region" :aria-label="`Note: ${note.noteTitle}`">
     <div class="mb-2">
-      <h3 class="font-semibold text-blue-800 text-lg">{{ note.noteTitle }}</h3>
-      <p class="text-blue-700 text-sm mt-1">{{ note.noteContent }}</p>
+      <h3 class="heading-medium text-blue-800 dark:text-blue-400">{{ note.noteTitle }}</h3>
+      <p class="text-small-muted dark:text-gray-300 mt-1">{{ note.noteContent }}</p>
     </div>
-    <div class="flex justify-end gap-2 mt-3">
-      <button
-        @click="handleEdit"
-        class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 text-sm font-medium transition"
+    <div class="flex-end-space mt-3">
+      <button 
+        @click="handleEdit" 
+        class="btn-small-primary"
+        aria-label="Edit note"
       >
         Edit
       </button>
-      <button
-        @click="handleDelete"
-        class="px-3 py-1 rounded-full bg-red-100 text-red-600 hover:bg-red-200 text-sm font-medium transition"
+      <button 
+        @click="handleDelete" 
+        class="btn-small-danger"
+        aria-label="Delete note"
       >
         Delete
       </button>
     </div>
   </div>
 </template>
+

@@ -43,25 +43,61 @@ const deleteEvent = async () => {
 </script>
 
 <template>
-  <div class="bg-white shadow rounded p-2 mb-2 border border-gray-200">
-    <div class="flex justify-between items-start">
+  <div class="section-card">
+    <div class="flex-between-start">
       <div>
-        <h4 class="font-semibold">{{ eventData.eventTitle }}</h4>
-        <p class="text-sm text-gray-600" v-if="eventData.eventDescription">{{ event.eventDescription }}</p>
+        <h4 class="heading-small">{{ eventData.eventTitle }}</h4>
+        <p class="text-small-muted" v-if="eventData.eventDescription">
+          {{ eventData.eventDescription }}
+        </p>
       </div>
-      <div class="flex space-x-1">
-        <Button icon="pi pi-pencil" class="p-button-text p-button-sm" @click="openEdit" />
-        <Button icon="pi pi-trash" class="p-button-text p-button-sm text-red-600" @click="deleteEvent" />
+      <div class="document-actions">
+        <button 
+          class="btn-small-primary" 
+          aria-label="Edit event" 
+          @click="openEdit">
+          <i class="pi pi-pencil" aria-hidden="true"></i>
+        </button>
+        <button 
+          class="btn-small-danger" 
+          aria-label="Delete event" 
+          @click="deleteEvent">
+          <i class="pi pi-trash" aria-hidden="true"></i>
+        </button>
       </div>
     </div>
 
-    <Dialog header="Edit Event" v-model:visible="editDialog" modal :closable="true" :draggable="false" >
-      <div class="flex flex-col space-y-2 p-4">
-        <InputText v-model="editedTitle" placeholder="Event Title" />
-        <Textarea v-model="editedDescription" placeholder="Event Description" rows="3" />
-        <div class="flex justify-end space-x-2 mt-2">
-          <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="editDialog = false" />
-          <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveEdit" />
+    <Dialog 
+      header="Edit Event" 
+      v-model:visible="editDialog" 
+      modal 
+      :closable="true" 
+      :draggable="false"
+      aria-label="Edit event dialog">
+
+      <div class="flex-col-space p-4">
+        <InputText 
+          v-model="editedTitle" 
+          placeholder="Event Title" 
+          aria-label="Event title" />
+        <Textarea 
+          v-model="editedDescription" 
+          placeholder="Event Description" 
+          rows="3" 
+          aria-label="Event description" />
+        <div class="flex-end-space mt-2">
+          <button 
+            class="btn-small-warning" 
+            aria-label="Cancel editing" 
+            @click="editDialog = false">
+            <i class="pi pi-times" aria-hidden="true"></i> Cancel
+          </button>
+          <button 
+            class="btn-small-primary" 
+            aria-label="Save changes" 
+            @click="saveEdit">
+            <i class="pi pi-check" aria-hidden="true"></i> Save
+          </button>
         </div>
       </div>
     </Dialog>

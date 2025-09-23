@@ -79,21 +79,16 @@ const cancelEditForm = () => {
 </script>
 
 <template>
-  <form
-    @submit.prevent="handleSubmit"
-    class="note-form"
-    role="form"
-    aria-label="Form to create or edit notes"
-  >
-    <fieldset class="note-fieldset">
-      <legend class="note-legend">
+  <form @submit.prevent="handleSubmit" role="form" aria-label="Form to create or edit notes">
+    <fieldset class="form-fieldset">
+      <legend class="form-legend section-legend">
         {{ editNote ? 'Edit Note' : 'Note to self' }}
       </legend>
 
       <input
         v-model="newNote.noteTitle"
         placeholder="Title"
-        class="note-input"
+        class="form-input"
         aria-label="Note title"
         required
       />
@@ -101,15 +96,16 @@ const cancelEditForm = () => {
       <textarea
         v-model="newNote.noteContent"
         placeholder="Write your notes here..."
-        class="note-textarea"
+        class="form-input"
         aria-label="Note content"
+        rows="4"
         required
       ></textarea>
 
-      <div class="note-actions">
+      <div class="flex-end-space mt-3">
         <button
           type="submit"
-          class="note-button-primary"
+          class="btn-small-primary"
           :aria-label="editNote ? 'Save changes' : 'Save new note'"
         >
           {{ editNote ? 'Save Changes' : 'Save Note' }}
@@ -119,7 +115,7 @@ const cancelEditForm = () => {
           v-if="editNote"
           type="button"
           @click="cancelEditForm"
-          class="note-button-secondary"
+          class="btn-small-danger"
           aria-label="Cancel editing"
         >
           Cancel

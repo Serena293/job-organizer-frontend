@@ -107,11 +107,8 @@ const handleSaveProfile = async (updatedData) => {
 </script>
 
 <template>
-  <section class="profile-container bg-primary">
-    <div class="profile-grid">
-      <!-- Main content -->
-      <div class="profile-main-content">
-        <header class="profile-header">
+  <main class="profile-container bg-primary">
+    <header class="profile-header">
           <div class="profile-actions">
             <BackButton aria-label="Go back" />
             <div class="profile-action-buttons">
@@ -152,6 +149,9 @@ const handleSaveProfile = async (updatedData) => {
           />
         </header>
 
+    <div class="profile-grid">
+      <div class="profile-main-content">
+       
         <!-- Documents Section -->
         <fieldset class="section-card">
           <legend class="section-legend">Documents</legend>
@@ -279,7 +279,7 @@ const handleSaveProfile = async (updatedData) => {
       <!-- Notes Section -->
       <NoteSection />
     </div>
-  </section>
+  </main>
 </template>
 
 

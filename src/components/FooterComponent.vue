@@ -3,16 +3,18 @@ const year = new Date().getFullYear()
 </script>
 
 <template>
-  <footer class="flex justify-center p-4 bg-gray-900 text-white">
+  <footer class="footer" role="contentinfo" aria-label="Footer">
     <a
       href="https://github.com/Serena293"
       target="_blank"
       rel="noopener noreferrer"
-      class="text-xl hover:text-gray-400"
+      class="footer-link"
+      aria-label="GitHub profile"
     >
-      <i class="fab fa-github"></i>
+      <i class="fab fa-github" aria-hidden="true"></i>
     </a>
 
-    <p class="text-sm">&copy; {{ year }} - Serena Ferraro</p>
+    <p class="footer-text">&copy; {{ year }} - Serena Ferraro</p>
   </footer>
 </template>
+

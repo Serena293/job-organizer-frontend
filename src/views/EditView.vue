@@ -23,7 +23,7 @@ const form = reactive({
   startingDate: '',
   pros: '',
   cons: '',
-  url: ''
+  url: '',
 })
 
 onMounted(async () => {
@@ -54,7 +54,7 @@ const handleSubmit = async () => {
       severity: 'success',
       summary: 'Success',
       detail: 'Job updated',
-      life: 3000
+      life: 3000,
     })
     router.push(`/jobs/${jobId}`)
   } else {
@@ -62,28 +62,40 @@ const handleSubmit = async () => {
       severity: 'error',
       summary: 'Error',
       detail: 'Job not updated',
-      life: 3000
+      life: 3000,
     })
   }
 }
 </script>
 
 <template>
-  <section class="bg-blue-50 min-h-screen py-12">
+  <main class="bg-primary min-screen-height">
+    <BackButton />
     <div class="container max-w-2xl mx-auto">
-      <BackButton/>
-      <div class="bg-white px-6 py-8 rounded-md shadow-md">
-        <h2 class="text-3xl font-semibold mb-6 text-center">Edit Job</h2>
+      <form @submit.prevent="handleSubmit" role="form" aria-label="Edit job application form">
+        <fieldset class="form-fieldset">
+          <legend class="section-legend">Edit Job</legend>
 
-        <form @submit.prevent="handleSubmit">
-          <div class="mb-4">
-            <label class="block font-medium mb-1">Job Title</label>
-            <input type="text" v-model="form.title" class="border rounded w-full py-2 px-3" required />
+          <div class="form-group">
+            <label class="form-label">Job Title</label>
+            <input
+              type="text"
+              v-model="form.title"
+              class="form-input"
+              placeholder="e.g. Frontend Developer"
+              required
+              aria-label="Job title"
+            />
           </div>
 
-          <div class="mb-4">
-            <label class="block font-medium mb-1">Status</label>
-            <select v-model="form.status" class="border rounded w-full py-2 px-3" required>
+          <div class="form-group">
+            <label class="form-label">Status</label>
+            <select
+              v-model="form.status"
+              class="form-input"
+              required
+              aria-label="Application status"
+            >
               <option value="APPLIED">Applied</option>
               <option value="INTERVIEW">Interview</option>
               <option value="OFFER">Offer</option>
@@ -96,60 +108,107 @@ const handleSubmit = async () => {
             </select>
           </div>
 
-          <div class="mb-4">
-            <label class="block font-medium mb-1">Job Type</label>
-            <select v-model="form.type" class="border rounded w-full py-2 px-3" required>
+          <div class="form-group">
+            <label class="form-label">Job Type</label>
+            <select v-model="form.type" class="form-input" required aria-label="Job type">
               <option value="FULL_TIME">Full-Time</option>
               <option value="PART_TIME">Part-Time</option>
             </select>
           </div>
 
-          <div class="mb-4">
-            <label class="block font-medium mb-1">Description</label>
-            <textarea v-model="form.description" class="border rounded w-full py-2 px-3" rows="4"></textarea>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea
+              v-model="form.description"
+              class="form-input resize-none"
+              rows="4"
+              placeholder="Add job duties, expectations, requirements, or copy and paste job description"
+              aria-label="Job description"
+            ></textarea>
           </div>
 
-          <div class="mb-4">
-            <label class="block font-medium mb-1">URL</label>
-            <input type="text" v-model="form.url" class="border rounded w-full py-2 px-3" />
+          <div class="form-group">
+            <label class="form-label">URL</label>
+            <input
+              type="text"
+              v-model="form.url"
+              class="form-input"
+              placeholder="www.example.com"
+              aria-label="Job application URL"
+            />
           </div>
 
-          <div class="mb-4">
-            <label class="block font-medium mb-1">Salary</label>
-            <input type="text" v-model="form.salary" class="border rounded w-full py-2 px-3" />
+          <div class="form-group">
+            <label class="form-label">Salary</label>
+            <input
+              type="text"
+              v-model="form.salary"
+              class="form-input"
+              placeholder="e.g. $50K - $70K"
+              aria-label="Salary range"
+            />
           </div>
 
-          <div class="mb-4">
-            <label class="block font-medium mb-1">Location</label>
-            <input type="text" v-model="form.location" class="border rounded w-full py-2 px-3" />
+          <div class="form-group">
+            <label class="form-label">Location</label>
+            <input
+              type="text"
+              v-model="form.location"
+              class="form-input"
+              placeholder="Company Location"
+              aria-label="Job location"
+            />
           </div>
 
-          <div class="mb-4">
-            <label class="block font-medium mb-1">Starting Date</label>
-            <input type="date" v-model="form.startingDate" class="border rounded w-full py-2 px-3" />
+          <div class="form-group">
+            <label class="form-label">Starting Date</label>
+            <input
+              type="date"
+              v-model="form.startingDate"
+              class="form-input"
+              aria-label="Expected starting date"
+            />
           </div>
 
-          <div class="grid grid-cols-2 gap-4 mb-6">
-            <div>
-              <label class="block font-medium mb-1">Pros</label>
-              <textarea v-model="form.pros" class="border rounded w-full py-2 px-3" rows="3"></textarea>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="form-group">
+              <label class="form-label">Pros</label>
+              <textarea
+                v-model="form.pros"
+                class="form-input resize-none"
+                rows="3"
+                placeholder="List the benefits of this job"
+                aria-label="Job advantages"
+              ></textarea>
             </div>
-            <div>
-              <label class="block font-medium mb-1">Cons</label>
-              <textarea v-model="form.cons" class="border rounded w-full py-2 px-3" rows="3"></textarea>
+            <div class="form-group">
+              <label class="form-label">Cons</label>
+              <textarea
+                v-model="form.cons"
+                class="form-input resize-none"
+                rows="3"
+                placeholder="List the downsides of this job"
+                aria-label="Job disadvantages"
+              ></textarea>
             </div>
           </div>
 
-          <div class="mb-6">
-            <label class="block font-medium mb-1">Company</label>
-            <input type="text" v-model="form.company" class="border rounded w-full py-2 px-3" />
+          <div class="form-group">
+            <label class="form-label">Company</label>
+            <input
+              type="text"
+              v-model="form.company"
+              class="form-input"
+              placeholder="Company Name"
+              aria-label="Company name"
+            />
           </div>
 
-          <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-full font-semibold">
+          <button type="submit" class="btn-primary w-full py-2 mt-3" aria-label="Save job changes">
             Save Changes
           </button>
-        </form>
-      </div>
+        </fieldset>
+      </form>
     </div>
-  </section>
+  </main>
 </template>

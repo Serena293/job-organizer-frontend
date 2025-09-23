@@ -75,60 +75,81 @@ const login = async (event) => {
 </script>
 
 <template>
-  <main class="min-screen-height bg-primary center-content">
-    <form @submit="login" class="form-container" aria-label="Login form">
-      <fieldset class="form-fieldset">
-        <legend class="form-legend">Login</legend>
+  <main class="min-screen-height bg-primary">
+    <BackButton />
+    <div class="container-responsive py-24">
+      <form
+        @submit="login"
+        class="form-container max-w-md mx-auto"
+        role="form"
+        aria-label="Login form"
+      >
+        <fieldset class="form-fieldset">
+          <legend class="section-legend text-center">Login</legend>
 
-        <!-- Email -->
-        <div class="form-group">
-          <label for="email" class="form-label">Email</label>
-          <input
-            id="email"
-            type="email"
-            placeholder="example@email.com"
-            v-model="email"
-            class="form-input"
-            :class="emailClass"
-            aria-required="true"
-          />
-          <p v-if="errors.email" class="form-error">{{ errors.email }}</p>
-        </div>
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email" class="form-label">Email</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="example@email.com"
+              v-model="email"
+              class="form-input"
+              :class="emailClass"
+              required
+              aria-describedby="email-error"
+              aria-label="Email address"
+            />
+            <p v-if="errors.email" id="email-error" class="form-error">{{ errors.email }}</p>
+          </div>
 
-        <!-- Password -->
-        <div class="form-group">
-          <label for="password" class="form-label">Password</label>
-          <input
-            id="password"
-            type="password"
-            placeholder="Insert your password"
-            v-model="password"
-            class="form-input"
-            :class="passClass"
-            aria-required="true"
-          />
-          <p v-if="errors.password" class="form-error">{{ errors.password }}</p>
-          <p v-if="serverError" class="form-error">{{ serverError }}</p>
-        </div>
+          <!-- Password -->
+          <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="Insert your password"
+              v-model="password"
+              class="form-input"
+              :class="passClass"
+              required
+              aria-describedby="password-error server-error"
+              aria-label="Password"
+            />
+            <p v-if="errors.password" id="password-error" class="form-error">
+              {{ errors.password }}
+            </p>
+            <p v-if="serverError" id="server-error" class="form-error">{{ serverError }}</p>
+          </div>
 
-        <!-- Submit -->
-        <button type="submit" class="btn-primary mt-4" aria-label="Log in">
-          Login
-        </button>
+          <!-- Submit -->
+          <button
+            type="submit"
+            class="btn-primary w-full py-3 mt-4"
+            aria-label="Log in to your account"
+          >
+            Login
+          </button>
 
-        <!-- Links -->
-        <div class="pt-4 text-center text-nav">
-          <p class="pt-2">
-            Don't have an account?
-            <RouterLink to="/register" class="btn-text">Sign up</RouterLink>
-          </p>
-          <p class="pt-1">
-            Forgot your password?
-            <RouterLink to="/forgot-password" class="btn-text">Click here</RouterLink>
-          </p>
-        </div>
-      </fieldset>
-    </form>
+          <!-- Links -->
+          <div class="pt-6 text-center">
+            <p class="pb-2 text-gray-700 dark:text-gray-300">
+              Don't have an account?
+              <RouterLink to="/register" class="btn-text" aria-label="Sign up for a new account"
+                >Sign up</RouterLink
+              >
+            </p>
+            <p class="text-gray-700 dark:text-gray-300">
+              Forgot your password?
+              <RouterLink to="/forgot-password" class="btn-text" aria-label="Recover your password"
+                >Click here</RouterLink
+              >
+            </p>
+          </div>
+        </fieldset>
+      </form>
+    </div>
   </main>
 </template>
-

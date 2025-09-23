@@ -17,7 +17,7 @@ const deleteNote = async (note) => {
 </script>
 
 <template>
-  <main class="notes-container" role="main" aria-label="Notes">
+  <main class="profile-main-content" role="main" aria-label="Notes">
     <NoteCard
       v-for="note in profileStore.notes"
       :key="note.id"
@@ -27,3 +27,4 @@ const deleteNote = async (note) => {
     />
   </main>
 </template>
+

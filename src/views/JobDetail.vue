@@ -28,89 +28,114 @@ const deleteJob = async () => {
 const editJob = () => {
   router.push(`/job/edit/${store.selectedJob.id}`)
 }
-
-
 </script>
 
 <template>
-  <div v-if="store.isLoading" class="text-center py-10">Loading...</div>
-  <section  v-else-if="store.selectedJob">
-  <div class="flex w-full justify-between px-6 items-center" >
-    <BackButton/>
-    <div>
-      <button @click="deleteJob"><i class="pi pi-trash text-red-500 px-3"></i></button>
-      <button @click="editJob"><i class=" pi
-pi-pen-to-square text-orange-500"></i></button>
-    </div>
-    
+  <div v-if="store.isLoading" class="text-center py-24">
+    <p class="text-gray-600 dark:text-gray-400">Loading...</p>
   </div>
-  <section class="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-lg space-y-6">
-    
-    <header class="flex items-center justify-between">
-      <h1  class="text-2xl font-bold text-blue-700">
-        {{ store.selectedJob.title }}
-      </h1>
-    
-      <span
-        class="px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-600"
-      >
-        {{ store.selectedJob.status }}
-      </span>
-    </header>
 
-    
-    <dl class="grid grid-cols-3 gap-4 text-gray-600 text-sm">
-      <div>
-        <dt class="font-medium text-gray-800">Company</dt>
-        <dd>{{ store.selectedJob.company }}</dd>
-      </div>
-      <div>
-        <dt class="font-medium text-gray-800">Location</dt>
-        <dd class="flex items-center gap-1">
-          <i class="fas fa-map-pin text-blue-500"></i> {{ store.selectedJob.location }}
-        </dd>
-      </div>
-      <div>
-        <dt class="font-medium text-gray-800">Salary</dt>
-        <dd>{{ store.selectedJob.salary }}</dd>
-      </div>
-    </dl>
+  <main v-else-if="store.selectedJob" class="min-screen-height bg-primary">
+    <BackButton />
 
- 
-    <div>
-      <p class="text-gray-700 leading-relaxed">
-        {{ store.selectedJob.description }}
-      </p>
-      <time
-        :datetime="store.selectedJob.startingDate"
-        class="block mt-2 text-gray-500 italic text-sm text-right"
-      >
-        Start: {{ store.selectedJob.startingDate }}
-      </time>
-    </div>
+    <!-- Job details card -->
+    <section class="section-card max-w-3xl mx-auto space-y-6">
+      <!-- Job title and status -->
+      <header class="flex items-center justify-between flex-wrap gap-4">
+        <h1 class="heading-large text-black-static">
+          {{ store.selectedJob.title }}
+        </h1>
 
-    <table class="w-full border border-gray-200 rounded-lg overflow-hidden">
-      <thead class="bg-blue-50">
-        <tr>
-          <th scope="col" class="p-3 text-blue-700 font-semibold text-center">
-            Pros
-          </th>
-          <th scope="col" class="p-3 text-blue-700 font-semibold text-center">
-            Cons
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="p-4 border-t border-gray-200 text-green-600 text-center">
-            {{ store.selectedJob.pros }}
-          </td>
-          <td class="p-4 border-t border-gray-200 text-red-600 text-center">
-            {{ store.selectedJob.cons }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-  </section>
+        <span
+          class="px-4 py-2 rounded-full text-sm font-medium bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300"
+        >
+          {{ store.selectedJob.status }}
+        </span>
+      </header>
+      <div class="flex gap-2 justify-self-start">
+        <button
+          @click="deleteJob"
+          class="btn-small-danger flex items-center gap-2"
+          aria-label="Delete job"
+        >
+          <i class="pi pi-trash"></i>
+          <!-- Delete -->
+        </button>
+        <button
+          @click="editJob"
+          class="btn-small-warning flex items-center gap-2"
+          aria-label="Edit job"
+        >
+          <i class="pi pi-pen-to-square"></i>
+          <!-- Edit -->
+        </button>
+      </div>
+
+      <!-- Job metadata -->
+      <dl class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="form-group">
+          <dt class="form-label mb-1">Company</dt>
+          <dd class="text-gray-900 dark:text-gray-100">{{ store.selectedJob.company }}</dd>
+        </div>
+        <div class="form-group">
+          <dt class="form-label mb-1">Location</dt>
+          <dd class="text-gray-900 dark:text-gray-100 flex items-center gap-2">
+            <i class="fas fa-map-pin text-blue-500 dark:text-blue-400"></i>
+            {{ store.selectedJob.location }}
+          </dd>
+        </div>
+        <div class="form-group">
+          <dt class="form-label mb-1">Salary</dt>
+          <dd class="text-gray-900 dark:text-gray-100">{{ store.selectedJob.salary }}</dd>
+        </div>
+      </dl>
+
+      <!-- Job description -->
+      <div class="form-group">
+        <h3 class="form-label mb-3">Description</h3>
+        <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+          {{ store.selectedJob.description }}
+        </p>
+        <time
+          :datetime="store.selectedJob.startingDate"
+          class="block mt-3 text-muted text-sm text-right"
+        >
+          Start: {{ store.selectedJob.startingDate }}
+        </time>
+      </div>
+
+      <!-- Pros and Cons table -->
+      <div class="section-card !p-0 overflow-hidden">
+        <table class="w-full">
+          <thead class="bg-gray-50 dark:bg-gray-700">
+            <tr>
+              <th
+                scope="col"
+                class="p-4 font-semibold text-green-600 dark:text-green-400 text-center"
+              >
+                Pros
+              </th>
+              <th scope="col" class="p-4 font-semibold text-red-600 dark:text-red-400 text-center">
+                Cons
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td
+                class="p-4 border-t border-gray-200 dark:border-gray-600 text-green-600 dark:text-green-400 text-center"
+              >
+                {{ store.selectedJob.pros }}
+              </td>
+              <td
+                class="p-4 border-t border-gray-200 dark:border-gray-600 text-red-600 dark:text-red-400 text-center"
+              >
+                {{ store.selectedJob.cons }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 </template>

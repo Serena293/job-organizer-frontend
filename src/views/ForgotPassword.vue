@@ -33,41 +33,42 @@ const sendEmail = async () => {
 </script>
 
 <template>
- <div class="bg-primary">
-      <BackButton />
+  <main class="min-screen-height bg-primary">
+    <BackButton />
+    <div class="container-responsive">     
+      
+      <form @submit.prevent="sendEmail" role="form" aria-label="Forgot password form" class="form-container max-w-md mx-auto"> 
+        <fieldset class="form-fieldset">
+          <legend class="section-legend text-center">Forgot Password</legend>
+
+          <div class="form-group">
+            <label for="find-email" class="form-label">
+              Type the email associated with your account:
+            </label>
+            <input 
+              type="email" 
+              id="find-email" 
+              v-model="email"
+              placeholder="email@example.com"
+              class="form-input"
+              required
+              aria-describedby="message error"
+              aria-label="Email address for password recovery"
+            />
+          </div>
+
+          <button type="submit" class="btn-primary w-full py-3 my-3" aria-label="Send password reset email">
+            Send Email
+          </button>
+
+          <p v-if="message" id="message" class="mt-4 text-green-600 dark:text-green-400">
+            {{ message }}
+          </p>
+          <p v-if="error" id="error" class="form-error mt-2">
+            {{ error }}
+          </p>
+        </fieldset>
+      </form>
     </div>
-  <main class="min-screen-height bg-primary center-content px-4">
-   
-    
-    <form @submit.prevent="sendEmail" class="form-container"> 
-      <fieldset class="form-fieldset">
-        <legend class="form-legend">Forgot Password</legend>
-
-        <div class="form-group">
-          <label for="find-email" class="form-label">
-            Type the email associated with your account:
-          </label>
-          <input 
-            type="email" 
-            id="find-email" 
-            v-model="email"
-            placeholder="email@example.com"
-            class="form-input"
-            aria-describedby="message error"
-          />
-        </div>
-
-        <button type="submit" class="btn-primary">
-          Send Email
-        </button>
-
-        <p v-if="message" id="message" class="mt-4 text-green-600 dark:text-green-400 form-error">
-          {{ message }}
-        </p>
-        <p v-if="error" id="error" class="form-error">
-          {{ error }}
-        </p>
-      </fieldset>
-    </form>
   </main>
 </template>

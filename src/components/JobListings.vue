@@ -29,15 +29,19 @@ const handleUpdate = async (id, updatedData) => {
 </script>
 
 <template>
-  <section class="px-4 py-10 bg-blue-50">
-    <div class="container-xl lg:container m-auto">
-      <h2 class="text-3xl font-bold text-blue-500 text-center mb-6">Jobs</h2>
-      <div class="grid grid-cols-3 md:grid-cols-3 gap-6">
-        <JobCard v-for="job in store.jobs" :key="job.id" :job="job"
-         :onDelete="handleDelete"
-         :onEdit="handleUpdate"/>
-        
+  <section class="jobs-section" role="region" aria-label="Job listings">
+    <div class="container m-auto">
+      <h2 class="jobs-title">Jobs</h2>
+      <div class="jobs-grid">
+        <JobCard 
+          v-for="job in store.jobs" 
+          :key="job.id" 
+          :job="job"
+          :onDelete="handleDelete"
+          :onEdit="handleUpdate"
+        />
       </div>
     </div>
   </section>
 </template>
+

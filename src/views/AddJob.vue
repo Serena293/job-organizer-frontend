@@ -24,7 +24,7 @@ const toast = useToast()
 const authStore = useAuthStore()
 
 const handleSubmit = async () => {
-   if (!authStore.token) {
+  if (!authStore.token) {
     toast.add({
       severity: 'error',
       summary: 'Errore',
@@ -51,8 +51,7 @@ const handleSubmit = async () => {
   try {
     const response = await fetch('http://localhost:8080/jobs', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json',
-       Authorization: `Bearer ${authStore.token}` },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${authStore.token}` },
       body: JSON.stringify(newJob),
     })
 
@@ -74,29 +73,31 @@ const handleSubmit = async () => {
       console.log('Response text:', errorText)
     }
 
-    toast.add(
-      {
-        severity: 'error',
-        summary: 'Errore',
-        detail: 'Error: ' + error,
-        life: 3000,
-      },
-
-    )
+    toast.add({
+      severity: 'error',
+      summary: 'Errore',
+      detail: 'Error: ' + error,
+      life: 3000,
+    })
   }
 }
 </script>
 
 <template>
-  <section class="bg-primary">
-    <BackButton/>
+  <section class="bg-primary min-screen-height">
+    <BackButton />
     <div class="container-responsive py-24">
-      <div class="section-card border border-gray-200 dark:border-gray-700">
-        <form @submit.prevent="handleSubmit" role="form" aria-label="Add job application form" class="form-container max-w-2xl mx-auto">
-          <legend class="heading-large text-center mb-6">Add Job</legend>
+      <form
+        @submit.prevent="handleSubmit"
+        role="form"
+        aria-label="Add job application form"
+        class="form-container max-w-2xl mx-auto"
+      >
+        <fieldset class="form-fieldset">
+          <legend class="heading-large text-center mb-6 text-black-static">Add Job</legend>
 
           <div class="form-group">
-            <label class="form-label font-bold">Job Title</label>
+            <label class="form-label">Job Title</label>
             <input
               type="text"
               v-model="form.title"
@@ -108,8 +109,13 @@ const handleSubmit = async () => {
           </div>
 
           <div class="form-group">
-            <label class="form-label font-bold">Status</label>
-            <select v-model="form.status" class="form-input" required aria-label="Application status">
+            <label class="form-label">Status</label>
+            <select
+              v-model="form.status"
+              class="form-input"
+              required
+              aria-label="Application status"
+            >
               <option value="APPLIED">Applied</option>
               <option value="INTERVIEW">Interview</option>
               <option value="OFFER">Offer</option>
@@ -123,7 +129,7 @@ const handleSubmit = async () => {
           </div>
 
           <div class="form-group">
-            <label class="form-label font-bold">Job Type</label>
+            <label class="form-label">Job Type</label>
             <select v-model="form.type" class="form-input" required aria-label="Job type">
               <option value="FULL_TIME">Full-Time</option>
               <option value="PART_TIME">Part-Time</option>
@@ -131,7 +137,7 @@ const handleSubmit = async () => {
           </div>
 
           <div class="form-group">
-            <label class="form-label font-bold">Description</label>
+            <label class="form-label">Description</label>
             <textarea
               v-model="form.description"
               class="form-input resize-none"
@@ -142,7 +148,7 @@ const handleSubmit = async () => {
           </div>
 
           <div class="form-group">
-            <label class="form-label font-bold">URL</label>
+            <label class="form-label">URL</label>
             <input
               type="text"
               v-model="form.url"
@@ -154,7 +160,7 @@ const handleSubmit = async () => {
           </div>
 
           <div class="form-group">
-            <label class="form-label font-bold">Salary</label>
+            <label class="form-label">Salary</label>
             <input
               type="text"
               v-model="form.salary"
@@ -166,7 +172,7 @@ const handleSubmit = async () => {
           </div>
 
           <div class="form-group">
-            <label class="form-label font-bold">Location</label>
+            <label class="form-label">Location</label>
             <input
               type="text"
               v-model="form.location"
@@ -178,7 +184,7 @@ const handleSubmit = async () => {
           </div>
 
           <div class="form-group">
-            <label class="form-label font-bold">Starting Date</label>
+            <label class="form-label">Starting Date</label>
             <input
               type="date"
               v-model="form.startingDate"
@@ -187,9 +193,9 @@ const handleSubmit = async () => {
             />
           </div>
 
-          <div class="grid-two-columns gap-4 mb-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div class="form-group">
-              <label class="form-label font-bold">Pros</label>
+              <label class="form-label">Pros</label>
               <textarea
                 v-model="form.pros"
                 class="form-input resize-none"
@@ -199,7 +205,7 @@ const handleSubmit = async () => {
               ></textarea>
             </div>
             <div class="form-group">
-              <label class="form-label font-bold">Cons</label>
+              <label class="form-label">Cons</label>
               <textarea
                 v-model="form.cons"
                 class="form-input resize-none"
@@ -210,9 +216,9 @@ const handleSubmit = async () => {
             </div>
           </div>
 
-          <h3 class="heading-medium mb-5">Company Info</h3>
+          <h3 class="heading-medium mb-5 text-black-static">Company Info</h3>
           <div class="form-group">
-            <label class="form-label font-bold">Company Name</label>
+            <label class="form-label">Company Name</label>
             <input
               type="text"
               v-model="form.company"
@@ -224,16 +230,12 @@ const handleSubmit = async () => {
           </div>
 
           <div>
-            <button
-              class="btn-primary w-full py-3 rounded-full font-bold"
-              type="submit"
-              aria-label="Save job application"
-            >
+            <button class="btn-primary w-full py-3" type="submit" aria-label="Save job application">
               Save Job
             </button>
           </div>
-        </form>
-      </div>
+        </fieldset>
+      </form>
     </div>
   </section>
 </template>

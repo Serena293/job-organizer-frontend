@@ -39,38 +39,52 @@ const goToEdit = () => {
 </script>
 
 <template>
-  <div class="bg-white rounded-xl shadow-md relative">
+  <div class="job-card">
     <div class="p-4">
-      <div class="mb-6">
-        <div class="flex w-full justify-between items-center">
-          <span class="text-gray-600 my-2">{{ job.type }}</span>
-          <button @click="deleteJob"><i class="pi pi-trash text-red-500"></i></button>
-          <button @click="goToEdit"><i class="pi pi-pen-to-square text-orange-500"></i></button>
+      <div class="job-card-header">
+        <span class="job-type">{{ job.type }}</span>
+        <div class="document-actions">
+          <button 
+            @click="deleteJob" 
+            class="btn-small-danger" 
+            aria-label="Delete job">
+            <i class="pi pi-trash" aria-hidden="true"></i>
+          </button>
+          <button 
+            @click="goToEdit" 
+            class="btn-small-warning" 
+            aria-label="Edit job">
+            <i class="pi pi-pen-to-square" aria-hidden="true"></i>
+          </button>
         </div>
-        <h3 class="text-xl font-bold">{{ job.title }}</h3>
       </div>
 
-      <div class="mb-5">
-        <div>
-          {{ truncatedDescription }}
-        </div>
-        <button @click="toggleFullDescription" class="text-blue-500 hover:text-blue-600 mb-5">
+      <h3 class="job-title">{{ job.title }}</h3>
+
+      <div class="job-description">
+        <div>{{ truncatedDescription }}</div>
+        <button 
+          @click="toggleFullDescription" 
+          class="job-toggle" 
+          :aria-expanded="showFullDescription"
+          :aria-controls="'job-desc-' + job.id">
           {{ showFullDescription ? 'Less' : 'More' }}
         </button>
       </div>
 
-      <h3 class="text-blue-500 mb-2">{{ job.salary }} / Year</h3>
+      <h3 class="job-salary">{{ job.salary }} / Year</h3>
 
-      <div class="border border-gray-100 mb-5"></div>
+      <div class="job-divider"></div>
 
-      <div class="flex flex-col lg:flex-row justify-between mb-4">
-        <div class="text-orange-700 mb-3">
-          <i class="pi pi-map-marker text-orange-700"></i>
+      <div class="job-footer">
+        <div class="job-location">
+          <i class="pi pi-map-marker" aria-hidden="true"></i>
           {{ job.location }}
         </div>
         <RouterLink
           :to="{ name: 'job-detail', params: { id: job.id } }"
-          class="h-[36px] bg-blue-500 hover:bg-grey-600 text-white px-4 py-2 rounded-lg text-center text-sm"
+          class="job-readmore"
+          aria-label="Read more about job: {{ job.title }}"
         >
           Read More
         </RouterLink>

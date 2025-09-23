@@ -3,6 +3,7 @@ import MainNavbar from './components/MainNavbar.vue'
 import FooterComponent from './components/FooterComponent.vue'
 import { RouterView } from 'vue-router'
 
+
 import Toast from 'primevue/toast'
 import 'primeicons/primeicons.css'
 

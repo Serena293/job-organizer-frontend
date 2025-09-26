@@ -66,11 +66,11 @@ const saveEdit = async () => {
   const formData = new FormData()
   formData.append('documentName', editingDoc.documentName)
   formData.append('documentDescription', editingDoc.documentDescription)
-  
+
   if (editingDoc.file) {
     formData.append('file', editingDoc.file)
   }
-   
+
   await profileStore.updateDocument(editingDoc.id, {
     documentName: editingDoc.documentName,
     documentDescription: editingDoc.documentDescription,
@@ -86,7 +86,7 @@ const resetEditingDoc = () => {
   editingDoc.documentName = ''
   editingDoc.documentDescription = ''
   editingDoc.documentPath = ''
-  editingDoc.file= null
+  editingDoc.file = null
 }
 
 const deleteDoc = async (id) => {
@@ -107,61 +107,51 @@ const handleSaveProfile = async (updatedData) => {
 </script>
 
 <template>
-  <main class="profile-container bg-primary">
+  <main class="profile-container">
+    <BackButton aria-label="Go back" />
     <header class="profile-header">
-          <div class="profile-actions">
-            <BackButton aria-label="Go back" />
-            <div class="profile-action-buttons">
-              <button
-                @click="showEditProfile = !showEditProfile"
-                class="btn-edit"
-                :aria-label="showEditProfile ? 'Close edit profile' : 'Edit profile'"
-              >
-                {{ showEditProfile ? 'Close Edit' : 'Edit Profile' }}
-              </button>
-              <button
-                @click="handleLogout"
-                class="btn-logout"
-                aria-label="Log out"
-              >
-                Log out
-              </button>
-            </div>
-          </div>
+      <div class="flex items-center justify-between">
+        <h1 class="profile-title">
+          {{ authStore.user?.firstName }} {{ authStore.user?.lastName }}
+        </h1>
 
-          <div>
-            <h1 class="heading-large text-gray-900 dark:text-white">
-              {{ authStore.user?.firstName }} {{ authStore.user?.lastName }}
-            </h1>
-            <h2 class="text-muted text-lg">
-              {{ authStore.user?.username }}
-            </h2>
-            <p class="text-muted">
-              {{ authStore.user?.email }}
-            </p>
+        <div class="profile-actions">
+          <div class="profile-action-buttons">
+            <button
+              @click="showEditProfile = !showEditProfile"
+              class="btn-edit"
+              :aria-label="showEditProfile ? 'Close edit profile' : 'Edit profile'"
+            >
+              {{ showEditProfile ? 'Close Edit' : 'Edit Profile' }}
+            </button>
+            <button @click="handleLogout" class="btn-logout" aria-label="Log out">Log out</button>
           </div>
+        </div>
+      </div>
 
-          <EditProfile
-            v-if="showEditProfile"
-            :user="authStore.user"
-            @save="handleSaveProfile"
-            @cancel="showEditProfile = false"
-          />
-        </header>
+      <h2 class="profile-subtitle">
+        {{ authStore.user?.username }}
+      </h2>
+      <p class="profile-email">
+        {{ authStore.user?.email }}
+      </p>
+
+      <EditProfile
+        v-if="showEditProfile"
+        :user="authStore.user"
+        @save="handleSaveProfile"
+        @cancel="showEditProfile = false"
+      />
+    </header>
 
     <div class="profile-grid">
       <div class="profile-main-content">
-       
         <!-- Documents Section -->
         <fieldset class="section-card">
           <legend class="section-legend">Documents</legend>
 
           <div class="section-content">
-            <div
-              v-for="doc in profileStore.documents"
-              :key="doc.id"
-              class="document-item"
-            >
+            <div v-for="doc in profileStore.documents" :key="doc.id" class="document-item">
               <div class="document-info">
                 <i
                   :class="getDocumentIcon(doc.documentPath)"
@@ -196,10 +186,7 @@ const handleSaveProfile = async (updatedData) => {
               </div>
             </div>
 
-            <p
-              v-if="profileStore.documents.length === 0"
-              class="empty-state"
-            >
+            <p v-if="profileStore.documents.length === 0" class="empty-state">
               No documents uploaded yet.
             </p>
           </div>
@@ -210,11 +197,7 @@ const handleSaveProfile = async (updatedData) => {
             :aria-label="editMode ? 'Cancel edit' : 'Upload document'"
           >
             {{ editMode ? 'Cancel edit' : 'Upload document' }}
-            <i
-              class="pi pi-plus text-sm pl-2"
-              v-if="!editMode"
-              aria-hidden="true"
-            ></i>
+            <i class="pi pi-plus text-sm pl-2" v-if="!editMode" aria-hidden="true"></i>
           </button>
 
           <div v-if="showUploadForm" class="mt-4">
@@ -245,30 +228,15 @@ const handleSaveProfile = async (updatedData) => {
               </div>
               <div>
                 <label for="file" class="form-label">Change File</label>
-                <input
-                  type="file"
-                  @change="handleFileChange"
-                  id="file"
-                  class="form-input"
-                />
-                <p
-                  v-if="editingDoc.file"
-                  class="text-sm text-muted mt-1"
-                >
+                <input type="file" @change="handleFileChange" id="file" class="form-input" />
+                <p v-if="editingDoc.file" class="text-sm text-muted mt-1">
                   New file: {{ editingDoc.file.name }}
                 </p>
-                <p
-                  v-else
-                  class="text-sm text-muted mt-1"
-                >
+                <p v-else class="text-sm text-muted mt-1">
                   Current file: {{ editingDoc.documentPath }}
                 </p>
               </div>
-              <button
-                type="submit"
-                class="btn-small-primary"
-                aria-label="Save document changes"
-              >
+              <button type="submit" class="btn-small-primary" aria-label="Save document changes">
                 Save Changes
               </button>
             </form>
@@ -277,9 +245,9 @@ const handleSaveProfile = async (updatedData) => {
       </div>
 
       <!-- Notes Section -->
-      <NoteSection />
+      <div class="section-card">
+        <NoteSection />
+      </div>
     </div>
   </main>
 </template>
-
-

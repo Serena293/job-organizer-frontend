@@ -77,7 +77,7 @@ const login = async (event) => {
 <template>
   <main class="min-screen-height bg-primary">
     <BackButton />
-    <div class="container-responsive py-24">
+    <div class="container-responsive">
       <form
         @submit="login"
         class="form-container max-w-md mx-auto"
@@ -85,7 +85,7 @@ const login = async (event) => {
         aria-label="Login form"
       >
         <fieldset class="form-fieldset">
-          <legend class="section-legend text-center">Login</legend>
+          <legend class="section-legend ">Login</legend>
 
           <!-- Email -->
           <div class="form-group">

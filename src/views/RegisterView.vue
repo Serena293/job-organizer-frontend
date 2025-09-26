@@ -3,7 +3,7 @@ import BackButton from '@/components/BackButton.vue'
 import { reactive, ref } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { useRouter } from 'vue-router'
-import { useInputClasses } from '@/utilities/useInputClasses'
+// import { useInputClasses } from '@/utilities/useInputClasses'
 const toast = useToast()
 const router = useRouter()
 
@@ -17,8 +17,8 @@ const errors = reactive({
   confirmPassword: '',
 })
 
-const { normal, error } = useInputClasses()
-const inputClass = (field) => (errors[field] ? error : normal)
+// const { normal, error } = useInputClasses()
+// const inputClass = (field) => (errors[field] ? error : normal)
 
 const form = reactive({
   firstName: '',
@@ -100,12 +100,11 @@ const createNewUser = async (event) => {
 </script>
 <template>
   <main class="min-screen-height bg-primary">
-    <div class="container-responsive py-24">
-      <BackButton class="mb-6"/>
-      
+    <BackButton class="mb-6"/>
+         
       <form @submit.prevent="createNewUser" class="form-container max-w-md mx-auto" role="form" aria-label="Create account form">
         <fieldset class="form-fieldset">
-          <legend class="section-legend text-center">Create Account</legend>
+          <legend class="section-legend">Create Account</legend>
 
           <!-- First Name -->
           <div class="form-group">
@@ -212,7 +211,6 @@ const createNewUser = async (event) => {
           </div>
         </fieldset>
       </form>
-    </div>
   </main>
 </template>
 

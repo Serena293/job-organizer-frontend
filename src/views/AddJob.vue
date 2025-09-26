@@ -84,9 +84,9 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <section class="bg-primary min-screen-height">
+  <section class="bg-primary min-screen-height pb-5">
     <BackButton />
-    <div class="container-responsive py-24">
+    <div class="container-responsive">
       <form
         @submit.prevent="handleSubmit"
         role="form"
@@ -94,7 +94,7 @@ const handleSubmit = async () => {
         class="form-container max-w-2xl mx-auto"
       >
         <fieldset class="form-fieldset">
-          <legend class="heading-large text-center mb-6 text-black-static">Add Job</legend>
+          <legend class="section-legend">Add Job</legend>
 
           <div class="form-group">
             <label class="form-label">Job Title</label>
@@ -230,7 +230,7 @@ const handleSubmit = async () => {
           </div>
 
           <div>
-            <button class="btn-primary w-full py-3" type="submit" aria-label="Save job application">
+            <button class="btn-primary w-full py-3 mt-5" type="submit" aria-label="Save job application">
               Save Job
             </button>
           </div>

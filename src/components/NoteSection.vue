@@ -23,7 +23,7 @@ const cancelNoteEdit = () => {
 </script>
 
 <template>
-  <fieldset class="form-fieldset" role="region" aria-label="Notes Section">
+  <fieldset role="region" aria-label="Notes Section">
 <legend class="form-legend flex justify-between items-center w-full mb-4">
   <span class="text-black-static">Notes</span>
   <button
@@ -38,7 +38,7 @@ class="btn-small-primary  flex items-center gap-2"
 </legend>
 
 
-    <div class="mt-4">
+    <div class="mt-4 ">
       <NoteForm
         v-if="showNoteForm || noteBeingEdited"
         :editNote="noteBeingEdited"

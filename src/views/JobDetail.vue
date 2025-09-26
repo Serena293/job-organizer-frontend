@@ -35,43 +35,41 @@ const editJob = () => {
     <p class="text-gray-600 dark:text-gray-400">Loading...</p>
   </div>
 
-  <main v-else-if="store.selectedJob" class="min-screen-height bg-primary">
+  <main v-else-if="store.selectedJob" class="min-screen-height bg-primary pb-5 ">
     <BackButton />
 
-    <!-- Job details card -->
     <section class="section-card max-w-3xl mx-auto space-y-6">
-      <!-- Job title and status -->
-      <header class="flex items-center justify-between flex-wrap gap-4">
-        <h1 class="heading-large text-black-static">
-          {{ store.selectedJob.title }}
-        </h1>
+      <header class="flex flex-col md:flex-row md:items-center md:justify-between flex-wrap gap-4">
+        <div class="flex items-center gap-4 flex-1 min-w-0">
+          <h1 class="heading-large text-black-static truncate">
+            {{ store.selectedJob.title }}
+          </h1>
 
-        <span
-          class="px-4 py-2 rounded-full text-sm font-medium bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300"
-        >
-          {{ store.selectedJob.status }}
-        </span>
+          <span
+            class="job-status"
+          >
+            {{ store.selectedJob.status }}
+          </span>
+        </div>
+
+        <div class="flex gap-2 flex-shrink-0">
+          <button
+            @click="editJob"
+            class="btn-small-warning flex items-center gap-2"
+            aria-label="Edit job"
+          >
+            <i class="pi pi-pen-to-square"></i> 
+          </button>
+          <button
+            @click="deleteJob"
+            class="btn-small-danger flex items-center gap-2"
+            aria-label="Delete job"
+          >
+            <i class="pi pi-trash"></i> 
+          </button>
+        </div>
       </header>
-      <div class="flex gap-2 justify-self-start">
-        <button
-          @click="deleteJob"
-          class="btn-small-danger flex items-center gap-2"
-          aria-label="Delete job"
-        >
-          <i class="pi pi-trash"></i>
-          <!-- Delete -->
-        </button>
-        <button
-          @click="editJob"
-          class="btn-small-warning flex items-center gap-2"
-          aria-label="Edit job"
-        >
-          <i class="pi pi-pen-to-square"></i>
-          <!-- Edit -->
-        </button>
-      </div>
 
-      <!-- Job metadata -->
       <dl class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="form-group">
           <dt class="form-label mb-1">Company</dt>
@@ -104,7 +102,7 @@ const editJob = () => {
         </time>
       </div>
 
-      <!-- Pros and Cons table -->
+  
       <div class="section-card !p-0 overflow-hidden">
         <table class="w-full">
           <thead class="bg-gray-50 dark:bg-gray-700">

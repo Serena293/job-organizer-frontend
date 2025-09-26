@@ -21,7 +21,7 @@ onMounted(() => {
         <JobListings />
       </div>
 
-      <div v-else class="center-content min-screen-height">
+      <div v-else class="min-screen-height">
         <div class="section-card text-center max-w-md mx-auto">
           <h2 class="heading-medium text-black-static mb-4">No Jobs Present</h2>
           <p class="text-gray-700 dark:text-gray-300 mb-4">

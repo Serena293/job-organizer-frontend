@@ -17,18 +17,18 @@ const isLoggedIn = computed(() => authStore.isLoggedIn)
   <main role="main" class="bg-primary">
     <HeroSection />
 
-    <section class="container-responsive py-24">
+    <section class="container py-8 ">
       <div :class="{'grid grid-cols-1 lg:grid-cols-2 gap-8' : isLoggedIn}">
 
-        <div :class="{'center-content min-screen-height': !isLoggedIn}">
-          <CalendarComponent />
+        <div :class="{' min-screen-height ': !isLoggedIn}">
+          <CalendarComponent class="mx-auto" />
         </div>
 
         <div
           v-if="isLoggedIn"
           role="complementary" 
           aria-label="Personal notes"
-          class="section-card"
+          class="section-card "
         >
           <NoteSection/>
         </div>

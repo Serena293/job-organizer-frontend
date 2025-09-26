@@ -1,9 +1,22 @@
 <script setup>
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/authStore';
+
 const router = useRouter()
+const authStore = useAuthStore()
 
 const goBack = () => {
-  router.back()
+  if (authStore.isLoggedIn) {
+   
+    const from = router.options.history.state.back
+    if (from && (from.includes('/login') || from.includes('/register'))) {
+      router.push({ name: 'Home' })
+    } else {
+      router.back()
+    }
+  } else {
+    router.back()
+  }
 }
 </script>
 

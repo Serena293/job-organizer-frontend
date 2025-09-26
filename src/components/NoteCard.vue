@@ -16,7 +16,7 @@ const handleDelete = () => emits('delete', props.note)
 
 
 <template>
-  <div class="section-card flex flex-col justify-between" role="region" :aria-label="`Note: ${note.noteTitle}`">
+  <div class="section-card flex flex-col justify-between mt-6" role="region" :aria-label="`Note: ${note.noteTitle}`">
     <div class="mb-2">
       <h3 class="heading-medium text-blue-800 dark:text-blue-400">{{ note.noteTitle }}</h3>
       <p class="text-small-muted dark:text-gray-300 mt-1">{{ note.noteContent }}</p>

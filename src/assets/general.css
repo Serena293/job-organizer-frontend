@@ -55,11 +55,11 @@
 }
 
 .btn-small-warning {
-  @apply btn-small bg-yellow-500 text-white hover:bg-yellow-600 focus:ring-yellow-300 p-2;
+  @apply btn-small text-yellow-600 hover:bg-yellow-100 focus:ring-yellow-300 p-2;
 }
 
 .btn-small-danger {
-  @apply btn-small bg-red-600 text-white hover:bg-red-700 focus:ring-red-300 p-2;
+  @apply btn-small text-red-600 hover:bg-red-100 focus:ring-red-300 p-2;
 }
 
 
@@ -104,7 +104,7 @@
    Sections & Cards
    ======================= */
 .section-card {
-  @apply border border-gray-200 dark:border-gray-700 rounded-lg p-4 mt-6 bg-white dark:bg-gray-800 dark:text-white;
+  @apply border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-800 dark:text-white;
 }
 
 .section-legend {
@@ -118,14 +118,42 @@
    Profile
    ======================= */
 .profile-container {
-  @apply bg-blue-50 dark:bg-gray-900 min-h-screen p-4;
+  @apply bg-blue-50 dark:bg-gray-900 min-h-screen px-6 lg:px-20 pb-5;
 }
 
-.profile-grid { @apply grid grid-cols-1 lg:grid-cols-3 gap-6; }
-.profile-main-content { @apply lg:col-span-2 space-y-6; }
-.profile-header { @apply space-y-4; }
-.profile-actions { @apply flex items-center justify-between; }
-.profile-action-buttons { @apply flex gap-2; }
+.profile-header {
+  @apply bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col gap-4 mb-8;
+}
+
+.profile-actions {
+  @apply flex items-center justify-between;
+}
+
+.profile-action-buttons {
+  @apply flex gap-3;
+}
+
+/* Titoli del profilo */
+.profile-title {
+  @apply heading-large text-gray-900 dark:text-white;
+}
+
+.profile-subtitle {
+  @apply heading-small text-muted;
+}
+
+.profile-email {
+  @apply text-small-muted;
+}
+
+/* Layout griglia */
+.profile-grid {
+  @apply grid grid-cols-1 lg:grid-cols-3 gap-10;
+}
+
+.profile-main-content {
+  @apply lg:col-span-2 space-y-6;
+}
 
 /* =======================
    Documents
@@ -153,7 +181,7 @@
    Calendar
    ======================= */
 .calendar-container { 
-  @apply p-6 max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900;
+  @apply p-6 max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900;
 }
 
 .calendar-grid { 
@@ -192,7 +220,7 @@
 /* =======================
    Hero / Quote section
    ======================= */
-.hero-section { @apply text-center bg-gray-900 text-white p-5 mx-5; }
+.hero-section { @apply text-center bg-gray-900 text-white p-5 ; }
 .hero-title { @apply heading-large; }
 .quote-text { @apply text-xl italic; }
 .quote-footer { @apply mt-2 text-sm text-gray-300 dark:text-gray-400; }
@@ -209,8 +237,15 @@
 .job-salary { @apply text-blue-500 mb-2 heading-small; }
 .job-divider { @apply border border-gray-100 mb-5; }
 .job-footer { @apply flex flex-col lg:flex-row justify-between mb-4; }
-.job-location { @apply text-orange-700 mb-3 flex items-center gap-1; }
-.job-readmore { @apply btn-medium-primary text-center; }
+.job-location { @apply text-orange-300 mb-3 flex items-center gap-1; }
+.job-readmore { @apply btn-medium-primary text-center px-3; }
+.job-status {
+  @apply px-3 py-1 rounded-full text-sm font-medium 
+         bg-blue-50 text-blue-600 
+         dark:bg-gray-800 dark:text-blue-400
+           flex items-center justify-center;
+         
+}
 
 /* =======================
    Job List Section
@@ -222,7 +257,12 @@
 /* =======================
    Navbar
    ======================= */
-.navbar { @apply flex justify-between items-center p-5 bg-gray-900 text-white dark:bg-gray-800; }
+.navbar { @apply flex justify-between items-center p-5  bg-gray-900 text-white dark:bg-gray-800 ;
+  position: relative;
+   
+ }
+
+
 .navbar-logo { @apply font-bold text-lg; }
 .navbar-links { @apply flex space-x-6 items-center; }
 .link-default { @apply text-white px-3 py-2 rounded-md hover:bg-gray-800 hover:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-300; }

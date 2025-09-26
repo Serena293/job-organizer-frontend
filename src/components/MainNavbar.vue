@@ -17,17 +17,15 @@ const isLoggedIn = computed(() => authStore.isLoggedIn)
 
 <template>
   <nav class="navbar">
-    <div class="navbar-logo">Logo</div>
-
-    <ul class="navbar-links">
-      <li>
-        <RouterLink
+    <div class="navbar-logo"> <RouterLink
           to="/"
           :class="[isActiveLink('/') ? 'link-active' : 'link-default']"
         >
           Home
-        </RouterLink>
-      </li>
+        </RouterLink></div>
+
+    <ul class="navbar-links">
+     
       <li>
         <RouterLink
           to="/jobs"
@@ -61,7 +59,7 @@ const isLoggedIn = computed(() => authStore.isLoggedIn)
         </RouterLink>
       </li>
 
-      <!-- Toggle dark mode -->
+      <!-- dark mode -->
       <li>
         <button 
           @click="themeStore.toggleTheme"

@@ -1,6 +1,7 @@
 <script setup>
 import BackButton from '@/components/BackButton.vue'
 import { ref } from 'vue'
+import { API_BASE_URL } from '@/config/api'
 
 const email = ref('')
 const message = ref('')
@@ -15,7 +16,7 @@ const sendEmail = async () => {
   }
 
   try {
-    const response = await fetch('http://localhost:8080/auth/forgot-password', {
+    const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email.value })

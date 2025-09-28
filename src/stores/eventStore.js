@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { useAuthStore } from './authStore'
+import { API_BASE_URL } from '@/config/api'
 
 export const useEventStore = defineStore('eventStore', () => {
   const events = ref([])
@@ -10,8 +11,7 @@ export const useEventStore = defineStore('eventStore', () => {
 
   const token = computed(() => authStore.token)
   const isAuthenticated = computed(() => authStore.isLoggedIn && !!token.value)
-  
-  const API_BASE_URL = 'http://localhost:8080'
+ 
 
   const fetchEvents = async () => {
         if (!isAuthenticated.value)  return

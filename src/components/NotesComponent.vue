@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted} from 'vue'
 import { useProfileStore } from '@/stores/profileStore'
 import NoteCard from './NoteCard.vue'
 

@@ -4,8 +4,9 @@ import { useAuthStore } from '@/stores/authStore'
 import { ref, computed, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useInputClasses } from '@/utilities/useInputClasses'
+import { API_BASE_URL } from '@/config/api'
 
-const { normal, error, vaild } = useInputClasses()
+const { normal, error } = useInputClasses()
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -49,7 +50,7 @@ const login = async (event) => {
     return
   }
   try {
-    const response = await fetch('http://localhost:8080/auth/login', {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email.value, password: password.value }),

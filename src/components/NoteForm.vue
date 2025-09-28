@@ -81,10 +81,7 @@ const cancelEditForm = () => {
 <template>
   <form @submit.prevent="handleSubmit" role="form" aria-label="Form to create or edit notes">
     <fieldset class="flex flex-col gap-3">
-      <!-- <legend class="form-legend section-legend">
-        {{ editNote ? 'Edit Note' : 'Note to self' }}
-      </legend> -->
-
+     
       <input
         v-model="newNote.noteTitle"
         placeholder="Title"

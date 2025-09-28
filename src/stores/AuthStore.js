@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { API_BASE_URL } from '@/config/api'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -31,7 +32,7 @@ export const useAuthStore = defineStore('auth', {
       if (!this.token) return
 
       try {
-        const response = await fetch('http://localhost:8080/api/auth/me', {
+        const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${this.token}`,
@@ -56,7 +57,7 @@ export const useAuthStore = defineStore('auth', {
       if (!this.token) throw new Error('Missing token')
 
       try {
-        const response = await fetch('http://localhost:8080/api/auth/me', {
+        const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',

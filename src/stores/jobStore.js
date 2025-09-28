@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { useAuthStore } from './authStore'
+import { API_BASE_URL } from '@/config/api'
 
 export const useJobStore = defineStore('jobStore', () => {
   const jobs = ref([])
@@ -12,7 +13,7 @@ export const useJobStore = defineStore('jobStore', () => {
     try {
       const authStore = useAuthStore()
       const token = authStore.token
-      const response = await fetch('http://localhost:8080/jobs', {
+      const response = await fetch(`${API_BASE_URL}/jobs`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -36,7 +37,7 @@ export const useJobStore = defineStore('jobStore', () => {
 
       let job = jobs.value.find((j) => j.id === Number(id))
       if (!job) {
-        const response = await fetch(`http://localhost:8080/jobs/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/jobs/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -55,7 +56,7 @@ export const useJobStore = defineStore('jobStore', () => {
     const authStore = useAuthStore()
     const token = authStore.token
 
-    const response = await fetch(`http://localhost:8080/jobs/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/jobs/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -78,7 +79,7 @@ export const useJobStore = defineStore('jobStore', () => {
     try {
       const authStore = useAuthStore()
       const token = authStore.token
-      const response = await fetch(`http://localhost:8080/jobs/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/jobs/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

@@ -24,13 +24,11 @@ export const useThemeStore = defineStore('theme', () => {
     if (saved) {
       isDark.value = saved === 'dark'
     } else {
-      // fallback: usa preferenza di sistema
       isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
     }
     applyTheme()
   }
 
-  // inizializza quando lo store viene usato
   onMounted(() => {
     initTheme()
   })

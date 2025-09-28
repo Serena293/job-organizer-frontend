@@ -5,6 +5,7 @@ import { useToast } from 'primevue/usetoast'
 import { useAuthStore } from '@/stores/authStore'
 // import { useInputClasses } from '@/utilities/useInputClasses'
 import BackButton from '@/components/BackButton.vue'
+import { API_BASE_URL } from '@/config/api'
 
 const form = reactive({
   type: 'FULL_TIME',
@@ -49,7 +50,7 @@ const handleSubmit = async () => {
   }
 
   try {
-    const response = await fetch('http://localhost:8080/jobs', {
+    const response = await fetch(`${API_BASE_URL}/jobs`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${authStore.token}` },
       body: JSON.stringify(newJob),

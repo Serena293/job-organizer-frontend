@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
 import { useJobStore } from '@/stores/jobStore'
 import BackButton from '@/components/BackButton.vue'
+import { API_BASE_URL } from '@/config/api'
 
 const route = useRoute()
 const router = useRouter()
@@ -56,7 +57,7 @@ const handleSubmit = async () => {
       detail: 'Job updated',
       life: 3000,
     })
-    router.push(`/jobs/${jobId}`)
+    router.push(`${API_BASE_URL}/jobs/${jobId}`)
   } else {
     toast.add({
       severity: 'error',

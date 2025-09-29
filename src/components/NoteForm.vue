@@ -1,6 +1,6 @@
 <script setup>
 import { useToast } from 'primevue/usetoast'
-import { useProfileStore } from '@/stores/profileStore'
+import { useProfileStore } from '@/stores/profileStore.js'
 import { reactive, watch } from 'vue'
 
 const props = defineProps({

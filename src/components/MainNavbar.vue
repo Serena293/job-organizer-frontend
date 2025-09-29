@@ -1,8 +1,8 @@
 <script setup>
 import { computed } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
-import { useAuthStore } from '@/stores/authStore'
-import { useThemeStore } from '@/stores/themeStore'
+import { useAuthStore } from '@/stores/authStore.js'
+import { useThemeStore } from '@/stores/themeStore.js'
 
 const authStore = useAuthStore()
 const themeStore = useThemeStore()

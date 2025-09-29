@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, ref } from 'vue'
-import { useProfileStore } from '@/stores/profileStore'
+import { useProfileStore } from '@/stores/profileStore.js'
 import { useToast } from 'primevue/usetoast'
 
 const profileStore = useProfileStore()

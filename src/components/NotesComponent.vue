@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted} from 'vue'
-import { useProfileStore } from '@/stores/profileStore'
+import { useProfileStore } from '@/stores/profileStore.js'
 import NoteCard from './NoteCard.vue'
 
 const profileStore = useProfileStore()

@@ -1,7 +1,7 @@
 <script setup>
 import JobCard from "./JobCard.vue"
 import { useToast } from 'primevue/usetoast'
-import { useJobStore } from '@/stores/jobStore'
+import { useJobStore } from '@/stores/jobStore.js'
 
 
 const store = useJobStore();

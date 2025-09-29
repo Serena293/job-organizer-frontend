@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { useEventStore } from '@/stores/eventStore'
-import { useAuthStore } from '@/stores/authStore'
+import { useEventStore } from '@/stores/eventStore.js'
+import { useAuthStore } from '@/stores/authStore.js'
 import EventItem from './EventItem.vue'
 
 const eventStore = useEventStore()

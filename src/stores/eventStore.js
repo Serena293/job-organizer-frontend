@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { useAuthStore } from './authStore.js'
-import { API_BASE_URL } from '@/config/api'
+import { API_BASE_URL } from '@/config/api.js'
 
 export const useEventStore = defineStore('eventStore', () => {
   const events = ref([])

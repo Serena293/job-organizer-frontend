@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { useAuthStore } from './authStore.js'
-import { API_BASE_URL } from '@/config/api'
+import { API_BASE_URL } from '@/config/api.js'
 
 export const useJobStore = defineStore('jobStore', () => {
   const jobs = ref([])

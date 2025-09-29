@@ -17,7 +17,7 @@ const isLoggedIn = computed(() => authStore.isLoggedIn)
   <main role="main" class="bg-primary">
     <HeroSection />
 
-    <section class="container py-8 ">
+    <section class="container py-12">
       <div :class="{'grid grid-cols-1 lg:grid-cols-2 gap-8' : isLoggedIn}">
 
         <div :class="{' min-screen-height ': !isLoggedIn}">

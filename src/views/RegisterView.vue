@@ -71,7 +71,7 @@ const createNewUser = async (event) => {
     } else {
      let errorData;
      try{
-      errorData = await  response. json()
+      errorData = await  response.json()
      }
      catch {
       errorData = {error: await response.text()}
@@ -89,8 +89,8 @@ const createNewUser = async (event) => {
         detail: 'Error: ',
         life: 3000,
       })
-      const text = await response.text()
-      console.error('Server error:', text)
+     
+      console.error('Server error:', errorData)
     }
   } catch (error) {
     serverError.value = 'Server connection errror'

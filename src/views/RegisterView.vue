@@ -4,6 +4,7 @@ import { reactive, ref } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { useRouter } from 'vue-router'
 // import { useInputClasses } from '@/utilities/useInputClasses'
+import { API_BASE_URL } from '@/config/api.js'
 const toast = useToast()
 const router = useRouter()
 
@@ -51,7 +52,7 @@ const createNewUser = async (event) => {
   if (!validateForm()) return
 
   try {
-    const response = await fetch('http://localhost:8080/auth/register', {
+    const response = await fetch(`${API_BASE_URL}/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

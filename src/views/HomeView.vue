@@ -5,7 +5,6 @@ import CalendarComponent from '@/components/CalendarComponent.vue'
 import {computed} from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import NoteSection from '@/components/NoteSection.vue'
-// import Column from 'primevue/column'
 
 const authStore = useAuthStore()
 

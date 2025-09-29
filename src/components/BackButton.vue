@@ -10,7 +10,7 @@ const goBack = () => {
    
     const from = router.options.history.state.back
     if (from && (from.includes('/login') || from.includes('/register'))) {
-      router.push({ name: 'Home' })
+      router.push({ name: 'home' })
     } else {
       router.back()
     }

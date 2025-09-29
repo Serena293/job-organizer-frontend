@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { useAuthStore } from '@/stores/authStore'
+import { useAuthStore } from './authStore'
 import { API_BASE_URL } from '@/config/api'
 
 export const useJobStore = defineStore('jobStore', () => {

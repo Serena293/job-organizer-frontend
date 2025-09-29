@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
 import { useEventStore } from '@/stores/eventStore'
-// import BackButton from 'primevue/button/BackButton.vue';
 import Dialog from 'primevue/dialog/Dialog.vue';
 import InputText from 'primevue/inputtext/InputText.vue';
 import Textarea from 'primevue/textarea/Textarea.vue';

@@ -4,7 +4,6 @@ import { useProfileStore } from '@/stores/profileStore'
 import NoteCard from './NoteCard.vue'
 
 const profileStore = useProfileStore()
-// const noteBeingEdited = ref(null)
 onMounted(() => {
   profileStore.fetchNotes()
 })

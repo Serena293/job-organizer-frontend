@@ -30,6 +30,8 @@ const form = reactive({
   confirmPassword: '',
 })
 
+const loading = ref(false)
+
 const validateForm = () => {
   Object.keys(errors).forEach((key) => (errors[key] = ''))
   serverError.value = ''
@@ -49,7 +51,11 @@ const validateForm = () => {
 
 const createNewUser = async (event) => {
   event.preventDefault()
-  if (!validateForm()) return
+  loading.value = true
+  if (!validateForm()) {
+    loading.value = false
+    return
+  }
 
   try {
     const response = await fetch(`${API_BASE_URL}/auth/register`, {
@@ -61,157 +67,181 @@ const createNewUser = async (event) => {
     })
 
     if (response.ok) {
-        toast.add({
+      toast.add({
         severity: 'success',
         summary: 'Success',
         detail: 'User Created',
         life: 3000,
       })
+      Object.keys(form).forEach((key) => (form[key] = ''))
+
       router.push('/login')
     } else {
-     let errorData;
-     try{
-      errorData = await  response.json()
-     }
-     catch {
-      errorData = {error: await response.text()}
-     }
+      let errorData
+      try {
+        errorData = await response.json()
+      } catch {
+        errorData = { error: await response.text() }
+      }
+
       if (errorData.error && errorData.error.toLowerCase().includes('email')) {
-        errors.email = errorData.error 
+        errors.email = errorData.error
+        serverError.value = ''
       } else {
         serverError.value = errorData.error || 'Registration failed'
       }
-      
 
       toast.add({
         severity: 'error',
-        summary: 'error',
-        detail: 'Error: ',
+        summary: 'Error',
+        detail: serverError.value || errors.email || 'Registration failed',
         life: 3000,
       })
-     
+
       console.error('Server error:', errorData)
     }
   } catch (error) {
-    serverError.value = 'Server connection errror'
-    toast.add({ severity: 'error', summary: 'Error', detail: serverError.value, life: 3000 })
+    serverError.value = 'Server connection error'
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: serverError.value,
+      life: 3000,
+    })
     console.error(error)
+  } finally {
+    loading.value = false
   }
- }
+}
 </script>
 <template>
   <main class="min-screen-height bg-primary">
-    <BackButton class="mb-6"/>
-         
-      <form @submit.prevent="createNewUser" class="form-container max-w-md mx-auto" role="form" aria-label="Create account form">
-        <fieldset class="form-fieldset">
-          <legend class="section-legend">Create Account</legend>
+    <BackButton class="mb-6" />
 
-          <!-- First Name -->
-          <div class="form-group">
-            <label for="first-name" class="form-label">First Name</label>
-            <input
-              id="first-name"
-              v-model="form.firstName"
-              placeholder="Your name"
-              class="form-input"
-              required
-              aria-describedby="firstName-error"
-              aria-label="First Name"
-            />
-            <p v-if="errors.firstName" id="firstName-error" class="form-error">{{ errors.firstName }}</p>
-          </div>
+    <form
+      @submit.prevent="createNewUser"
+      class="form-container max-w-md mx-auto"
+      role="form"
+      aria-label="Create account form"
+    >
+      <fieldset class="form-fieldset">
+        <legend class="section-legend">Create Account</legend>
 
-          <!-- Last Name -->
-          <div class="form-group">
-            <label for="last-name" class="form-label">Last Name</label>
-            <input
-              id="last-name"
-              v-model="form.lastName"
-              placeholder="Your last name"
-              class="form-input"
-              required
-              aria-describedby="lastName-error"
-              aria-label="Last Name"
-            />
-            <p v-if="errors.lastName" id="lastName-error" class="form-error">{{ errors.lastName }}</p>
-          </div>
+        <!-- First Name -->
+        <div class="form-group">
+          <label for="first-name" class="form-label">First Name</label>
+          <input
+            id="first-name"
+            v-model="form.firstName"
+            placeholder="Your name"
+            class="form-input"
+            required
+            aria-describedby="firstName-error"
+            aria-label="First Name"
+          />
+          <p v-if="errors.firstName" id="firstName-error" class="form-error">
+            {{ errors.firstName }}
+          </p>
+        </div>
 
-          <!-- Username -->
-          <div class="form-group">
-            <label for="username" class="form-label">Username</label>
-            <input
-              id="username"
-              v-model="form.username"
-              placeholder="Username"
-              class="form-input"
-              required
-              aria-describedby="username-error"
-              aria-label="Username"
-            />
-            <p v-if="errors.username" id="username-error" class="form-error">{{ errors.username }}</p>
-          </div>
+        <!-- Last Name -->
+        <div class="form-group">
+          <label for="last-name" class="form-label">Last Name</label>
+          <input
+            id="last-name"
+            v-model="form.lastName"
+            placeholder="Your last name"
+            class="form-input"
+            required
+            aria-describedby="lastName-error"
+            aria-label="Last Name"
+          />
+          <p v-if="errors.lastName" id="lastName-error" class="form-error">{{ errors.lastName }}</p>
+        </div>
 
-          <!-- Email -->
-          <div class="form-group">
-            <label for="email" class="form-label">Email</label>
-            <input
-              id="email"
-              type="email"
-              v-model="form.email"
-              placeholder="example@email.com"
-              class="form-input"
-              required
-              aria-describedby="email-error"
-              aria-label="Email address"
-            />
-            <p v-if="errors.email" id="email-error" class="form-error">{{ errors.email }}</p>
-          </div>
+        <!-- Username -->
+        <div class="form-group">
+          <label for="username" class="form-label">Username</label>
+          <input
+            id="username"
+            v-model="form.username"
+            placeholder="Username"
+            class="form-input"
+            required
+            aria-describedby="username-error"
+            aria-label="Username"
+          />
+          <p v-if="errors.username" id="username-error" class="form-error">{{ errors.username }}</p>
+        </div>
 
-          <!-- Password -->
-          <div class="form-group">
-            <label for="password" class="form-label">Password</label>
-            <input
-              id="password"
-              type="password"
-              v-model="form.password"
-              placeholder="Insert your password"
-              class="form-input"
-              required
-              aria-describedby="password-error"
-              aria-label="Password"
-            />
-            <p v-if="errors.password" id="password-error" class="form-error">{{ errors.password }}</p>
-          </div>
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
+          <input
+            id="email"
+            type="email"
+            v-model="form.email"
+            placeholder="example@email.com"
+            class="form-input"
+            required
+            aria-describedby="email-error"
+            aria-label="Email address"
+          />
+          <p v-if="errors.email" id="email-error" class="form-error">{{ errors.email }}</p>
+        </div>
 
-          <!-- Confirm Password -->
-          <div class="form-group">
-            <label for="confirm-password" class="form-label">Confirm Password</label>
-            <input
-              id="confirm-password"
-              type="password"
-              v-model="form.confirmPassword"
-              placeholder="Re-enter password"
-              class="form-input"
-              required
-              aria-describedby="confirmPassword-error"
-              aria-label="Confirm Password"
-            />
-            <p v-if="errors.confirmPassword" id="confirmPassword-error" class="form-error">{{ errors.confirmPassword }}</p>
-          </div>
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input
+            id="password"
+            type="password"
+            v-model="form.password"
+            placeholder="Insert your password"
+            class="form-input"
+            required
+            aria-describedby="password-error"
+            aria-label="Password"
+          />
+          <p v-if="errors.password" id="password-error" class="form-error">{{ errors.password }}</p>
+        </div>
 
-          <button type="submit" class="btn-primary w-full py-3 mt-6" aria-label="Create new account">
-            Create Account
-          </button>
+        <!-- Confirm Password -->
+        <div class="form-group">
+          <label for="confirm-password" class="form-label">Confirm Password</label>
+          <input
+            id="confirm-password"
+            type="password"
+            v-model="form.confirmPassword"
+            placeholder="Re-enter password"
+            class="form-input"
+            required
+            aria-describedby="confirmPassword-error"
+            aria-label="Confirm Password"
+          />
+          <p v-if="errors.confirmPassword" id="confirmPassword-error" class="form-error">
+            {{ errors.confirmPassword }}
+          </p>
+        </div>
 
-          <div class="pt-6 text-center">
-            <p class="text-gray-700 dark:text-gray-300">
-              Already have an account?
-              <RouterLink to="/login" class="btn-text" aria-label="Go to login page">Log in</RouterLink>
-            </p>
-          </div>
-        </fieldset>
-      </form>
+        <button
+          :disabled="loading"
+          type="submit"
+          class="btn-primary w-full py-3 mt-6"
+          aria-label="Create new account"
+        >
+          Create Account
+        </button>
+
+        <div class="pt-6 text-center">
+          <p class="text-gray-700 dark:text-gray-300">
+            Already have an account?
+            <RouterLink to="/login" class="btn-text" aria-label="Go to login page"
+              >Log in</RouterLink
+            >
+          </p>
+        </div>
+      </fieldset>
+    </form>
   </main>
 </template>
-

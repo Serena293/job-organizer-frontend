@@ -70,12 +70,12 @@ const createNewUser = async (event) => {
       toast.add({
         severity: 'success',
         summary: 'Success',
-        detail: 'User Created',
+        detail: 'User registered successfully',
         life: 3000,
       })
       Object.keys(form).forEach((key) => (form[key] = ''))
 
-      router.push('/login')
+       await router.push('/login')
     } else {
       let errorData
       try {

@@ -66,7 +66,7 @@ const createNewUser = async (event) => {
       body: JSON.stringify(form),
     })
 
-    if (response.ok) {
+    if (response.ok || response.status === 201) {
       toast.add({
         severity: 'success',
         summary: 'Success',

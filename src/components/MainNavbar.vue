@@ -38,7 +38,7 @@ const isLoggedIn = computed(() => authStore.isLoggedIn)
       <li>
         <RouterLink
           to="/jobs/add"
-          :class="[isActiveLink('/jobs/add') ? 'link-active' : 'link-default']"
+          :class="[isActiveLink('/jobs/add') ? 'link-active md:whitespace-nowrap' : 'link-default md:whitespace-nowrap']"
         >
           Add Job
         </RouterLink>

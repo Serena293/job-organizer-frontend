@@ -24,12 +24,18 @@ const days = computed(() => {
   return [...blanks, ...monthDays]
 })
 
-const classToday = (day) => {
-  if (day === today && currentMonthIndex === now.getMonth() && currentYear === now.getFullYear()) {
-    return 'bg-gray-300'
-  }
-  return 'bg-white'
-}
+// const classToday = (day) => {
+//   if (!day) return 'bg-white'
+//   if (
+//     day === today &&
+//     currentMonthIndex === now.getMonth() &&
+//     currentYear === now.getFullYear()
+//   ) {
+//     return 'bg-gray-300'
+//   }
+//   return 'bg-white'
+// }
+
 
 const monthNames = [
   'January',
@@ -148,10 +154,16 @@ watch(
         v-for="(day, index) in days"
         :key="index"
         class="calendar-day"
-        :class="[
-          day ? classToday(day) : 'calendar-day-empty',
-          selectedDay === day ? 'bg-blue-200 dark:bg-blue-800 border-blue-400 dark:border-blue-500' : 'hover:bg-gray-200 dark:hover:bg-gray-700',
-        ]"
+  :class="[
+  !day ? 'calendar-day-empty' : 'calendar-day-default',
+  day && day === today && currentMonthIndex === now.getMonth() && currentYear === now.getFullYear()
+    ? 'calendar-day-today'
+    : '',
+  selectedDay && selectedDay.value === day
+    ? 'calendar-day-selected'
+    : ''
+]"
+
         @click="handleDayClick(day)"
         :aria-label="day ? `Select day ${day}` : 'Empty day'"
         role="button"

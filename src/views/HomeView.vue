@@ -16,11 +16,11 @@ const isLoggedIn = computed(() => authStore.isLoggedIn)
   <main role="main" class="bg-primary">
     <HeroSection />
 
-    <section class="container py-12">
+    <section class="container">
       <div :class="{'grid grid-cols-1 lg:grid-cols-2 gap-8' : isLoggedIn}">
 
-        <div :class="{' min-screen-height ': !isLoggedIn}">
-          <CalendarComponent class="mx-auto" />
+        <div :class="{' min-screen-height content-center': !isLoggedIn}">
+          <CalendarComponent class="mx-auto items-center" />
         </div>
 
         <div

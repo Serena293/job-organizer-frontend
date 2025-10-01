@@ -44,7 +44,6 @@ const validateForm = () => {
 const login = async (event) => {
   event.preventDefault()
   serverError.value = ''
-  // console.log(serverError.value)
   if (!validateForm()) {
     console.log('non validato')
     return
@@ -78,7 +77,7 @@ const login = async (event) => {
 <template>
   <main class="min-screen-height bg-primary">
     <BackButton />
-    <div class="container-responsive">
+    <div class="container-responsive content-center min-h-screen">
       <form
         @submit="login"
         class="form-container max-w-md mx-auto"

@@ -84,6 +84,16 @@ const createNewUser = async (event) => {
         errorData = { error: await response.text() }
       }
 
+      toast.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'User registered successfully. Could not send email.',
+        life: 2000,
+      })
+
+      Object.keys(errors).forEach((key) => (errors[key] = ''))
+      router.push('/login')
+
       if (errorData.error && errorData.error.toLowerCase().includes('email')) {
         errors.email = errorData.error
         serverError.value = ''

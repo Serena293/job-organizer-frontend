@@ -15,7 +15,7 @@ import 'primeicons/primeicons.css'
       <MainNavbar />
     </header>
 
-    <main class="flex-grow">
+    <main class="flex-grow bg-primary">
       <RouterView />
     </main>
 

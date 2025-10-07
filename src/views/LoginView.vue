@@ -75,9 +75,9 @@ const login = async (event) => {
 </script>
 
 <template>
-  <main class="min-screen-height bg-primary">
+  <main class="bg-primary">
     <BackButton />
-    <div class="container-responsive content-center min-h-screen">
+    <div class="content-center ">
       <form
         @submit="login"
         class="form-container max-w-md mx-auto"

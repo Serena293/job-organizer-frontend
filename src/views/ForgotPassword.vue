@@ -25,7 +25,6 @@ const sendEmail = async () => {
     if (!response.ok) {
       throw new Error('Network response was not ok')
     }
-   console.log(response.data)
     message.value = 'If this email exists, you will receive a reset link.'
   } catch (error) {
     error.value = 'Something went wrong. Try again later.'
@@ -34,8 +33,8 @@ const sendEmail = async () => {
 </script>
 
 <template>
-  <main class="min-screen-height bg-primary">
-    <BackButton />
+  <main>
+    <Bacgit statskButton />
     <div class="container-responsive">     
       
       <form @submit.prevent="sendEmail" role="form" aria-label="Forgot password form" class="form-container max-w-md mx-auto"> 

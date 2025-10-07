@@ -19,8 +19,8 @@ const isLoggedIn = computed(() => authStore.isLoggedIn)
     <section class="container">
       <div :class="{'grid grid-cols-1 lg:grid-cols-2 gap-8' : isLoggedIn}">
 
-        <div :class="{' min-screen-height content-center': !isLoggedIn}">
-          <CalendarComponent class="mx-auto items-center" />
+        <div :class="{'content-center': !isLoggedIn}">
+          <CalendarComponent class="mx-auto my-auto items-center" />
         </div>
 
         <div

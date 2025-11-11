@@ -45,7 +45,7 @@ const isLoggedIn = computed(() => authStore.isLoggedIn)
       </li>
       <li v-if="isLoggedIn">
         <RouterLink
-          to="isLoggedIn ? '/profile' : '/login'"
+          :to="isLoggedIn ? '/profile' : '/login'"
           :class="[isActiveLink('/profile') ? 'link-active' : 'link-default']"
         >
           Profile

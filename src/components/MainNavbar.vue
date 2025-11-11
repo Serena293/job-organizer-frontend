@@ -27,7 +27,7 @@ const isLoggedIn = computed(() => authStore.isLoggedIn)
 
     <ul class="navbar-links">
      
-      <li>
+      <li v-if="isLoggedIn">
         <RouterLink
           to="/jobs"
           :class="[isActiveLink('/jobs') ? 'link-active' : 'link-default']"
@@ -35,7 +35,7 @@ const isLoggedIn = computed(() => authStore.isLoggedIn)
           Jobs
         </RouterLink>
       </li>
-      <li>
+      <li v-if="isLoggedIn">
         <RouterLink
           to="/jobs/add"
           :class="[isActiveLink('/jobs/add') ? 'link-active md:whitespace-nowrap' : 'link-default md:whitespace-nowrap']"
@@ -45,7 +45,7 @@ const isLoggedIn = computed(() => authStore.isLoggedIn)
       </li>
       <li v-if="isLoggedIn">
         <RouterLink
-          to="/profile"
+          to="isLoggedIn ? '/profile' : '/login'"
           :class="[isActiveLink('/profile') ? 'link-active' : 'link-default']"
         >
           Profile

@@ -13,6 +13,7 @@ const router = useRouter()
 
 const email = ref('')
 const password = ref('')
+const showPassword = ref(false)
 const errors = reactive({
   email: '',
   password: '',
@@ -21,6 +22,10 @@ const serverError = ref('')
 
 const emailClass = computed(() => (errors.email ? error : normal))
 const passClass = computed(() => (errors.password ? error : normal))
+
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value
+}
 
 const validateForm = () => {
   errors.email = ''
@@ -77,7 +82,7 @@ const login = async (event) => {
 <template>
   <main class="bg-primary">
     <BackButton />
-    <div class="content-center ">
+    <div class="content-center">
       <form
         @submit="login"
         class="form-container max-w-md mx-auto"
@@ -85,7 +90,7 @@ const login = async (event) => {
         aria-label="Login form"
       >
         <fieldset class="form-fieldset">
-          <legend class="section-legend ">Login</legend>
+          <legend class="section-legend">Login</legend>
 
           <!-- Email -->
           <div class="form-group">
@@ -105,19 +110,32 @@ const login = async (event) => {
           </div>
 
           <!-- Password -->
-          <div class="form-group">
+         
+          <div class="form-group relative">
             <label for="password" class="form-label">Password</label>
+
             <input
               id="password"
-              type="password"
+              :type="showPassword ? 'text' : 'password'"
               placeholder="Insert your password"
               v-model="password"
-              class="form-input"
+              class="form-input pr-10"
               :class="passClass"
               required
               aria-describedby="password-error server-error"
               aria-label="Password"
             />
+
+            <i
+              :class="[
+                'pi',
+                showPassword ? 'pi-eye-slash' : 'pi-eye',
+                'absolute right-5 top-8 cursor-pointer text-gray-600',
+              ]"
+              @click="togglePasswordVisibility"
+              aria-label="Toggle password visibility"
+            ></i>
+
             <p v-if="errors.password" id="password-error" class="form-error">
               {{ errors.password }}
             </p>

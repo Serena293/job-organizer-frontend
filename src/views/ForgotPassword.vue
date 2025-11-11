@@ -3,6 +3,7 @@ import BackButton from '@/components/BackButton.vue'
 import { ref } from 'vue'
 import { API_BASE_URL } from '@/config/api'
 
+
 const email = ref('')
 const message = ref('')
 const error = ref('')
@@ -34,7 +35,7 @@ const sendEmail = async () => {
 
 <template>
   <main>
-    <Bacgit statskButton />
+    <BackButton class="mb-6" />
     <div class="container-responsive">     
       
       <form @submit.prevent="sendEmail" role="form" aria-label="Forgot password form" class="form-container max-w-md mx-auto"> 
